@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +76,18 @@ public class RegularExpressionRandomizer extends FakerBasedRandomizer<String> {
 
     @Override
     public String getRandomValue() {
-        return faker.regexify(regularExpression);
+        return faker.regexify(removeLeadingAndTailingBoundaryMatchers(regularExpression));
     }
 
+    private static String removeLeadingAndTailingBoundaryMatchers(String regularExpression) {
+        String regularExpressionWithoutBoundaryMatchers = regularExpression;
+        int lastIndex = regularExpressionWithoutBoundaryMatchers.length() - 1;
+        if (regularExpressionWithoutBoundaryMatchers.indexOf('^') == 0) {
+            regularExpressionWithoutBoundaryMatchers = regularExpressionWithoutBoundaryMatchers.substring(1, lastIndex + 1);
+        }
+        if (regularExpressionWithoutBoundaryMatchers.lastIndexOf('$') == lastIndex) {
+            regularExpressionWithoutBoundaryMatchers = regularExpressionWithoutBoundaryMatchers.substring(0, lastIndex);
+        }
+        return regularExpressionWithoutBoundaryMatchers;
+    }
 }

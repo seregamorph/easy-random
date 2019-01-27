@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,21 @@
  */
 package io.github.benas.randombeans.randomizers.range;
 
-import org.junit.Before;
-import org.junit.Test;
+import static io.github.benas.randombeans.randomizers.range.BigIntegerRangeRandomizer.aNewBigIntegerRangeRandomizer;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.math.BigInteger;
 
-import static io.github.benas.randombeans.randomizers.range.BigIntegerRangeRandomizer.aNewBigIntegerRangeRandomizer;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BigIntegerRangeRandomizerTest extends AbstractRangeRandomizerTest<BigInteger> {
 
     private Integer min, max;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         min = 1;
         max = 10;
@@ -49,9 +50,9 @@ public class BigIntegerRangeRandomizerTest extends AbstractRangeRandomizerTest<B
         assertThat(randomValue.intValue()).isBetween(min, max);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSpecifiedMinValueIsAfterMaxValueThenThrowIllegalArgumentException() {
-        aNewBigIntegerRangeRandomizer(max, min);
+        assertThatThrownBy(() -> aNewBigIntegerRangeRandomizer(max, min)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

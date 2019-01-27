@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,16 @@
  */
 package io.github.benas.randombeans;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.SynchronousQueue;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ObjectFactoryTest {
 
@@ -39,7 +40,7 @@ public class ObjectFactoryTest {
 
     private ObjectFactory objectFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         objectFactory = new ObjectFactory();
     }
@@ -51,10 +52,10 @@ public class ObjectFactoryTest {
         assertThat(string).isNotNull();
     }
 
-    @Test(expected = InstantiationError.class)
+    @Test
     public void whenNoConcreteTypeIsFound_thenShouldThrowAnInstantiationError() {
         objectFactory.setScanClasspathForConcreteTypes(true);
-        objectFactory.createInstance(AbstractFoo.class);
+        assertThatThrownBy(() -> objectFactory.createInstance(AbstractFoo.class)).isInstanceOf(InstantiationError.class);
     }
 
     @Test
@@ -65,14 +66,14 @@ public class ObjectFactoryTest {
         assertThat(((ArrayBlockingQueue<?>) collection).remainingCapacity()).isEqualTo(INITIAL_CAPACITY);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void synchronousQueueShouldBeRejected() {
-        objectFactory.createEmptyCollectionForType(SynchronousQueue.class, INITIAL_CAPACITY);
+        assertThatThrownBy(() -> objectFactory.createEmptyCollectionForType(SynchronousQueue.class, INITIAL_CAPACITY)).isInstanceOf(UnsupportedOperationException.class);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void delayQueueShouldBeRejected() {
-        objectFactory.createEmptyCollectionForType(DelayQueue.class, INITIAL_CAPACITY);
+        assertThatThrownBy(() -> objectFactory.createEmptyCollectionForType(DelayQueue.class, INITIAL_CAPACITY)).isInstanceOf(UnsupportedOperationException.class);
     }
 
     private abstract class AbstractFoo {

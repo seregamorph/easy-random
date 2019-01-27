@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -47,26 +47,32 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.Period;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
 
-@RunWith(DataProviderRunner.class)
 public class TimeRandomizersTest extends AbstractRandomizerTest<Randomizer<?>> {
 
-    @DataProvider
     public static Object[] generateRandomizers() {
         return new Object[] {
                 aNewDurationRandomizer(),
@@ -90,8 +96,8 @@ public class TimeRandomizersTest extends AbstractRandomizerTest<Randomizer<?>> {
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateRandomizers")
     public void generatedTimeShouldNotBeNull(Randomizer<?> randomizer) {
         // when
         Object randomNumber = randomizer.getRandomValue();
@@ -99,7 +105,6 @@ public class TimeRandomizersTest extends AbstractRandomizerTest<Randomizer<?>> {
         then(randomNumber).isNotNull();
     }
 
-    @DataProvider
     public static Object[][] generateSeededRandomizersAndTheirExpectedValues() {
         Calendar expectedCalendar = Calendar.getInstance();
         expectedCalendar.setTime(new Date(1718733244570L));
@@ -129,8 +134,8 @@ public class TimeRandomizersTest extends AbstractRandomizerTest<Randomizer<?>> {
         };
     }
 
-    @Test
-    @UseDataProvider("generateSeededRandomizersAndTheirExpectedValues")
+    @ParameterizedTest
+    @MethodSource("generateSeededRandomizersAndTheirExpectedValues")
     public void shouldGenerateTheSameValueForTheSameSeed(Randomizer<?> randomizer, Object expected) {
         //when
         Object actual = randomizer.getRandomValue();

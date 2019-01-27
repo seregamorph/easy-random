@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,17 @@
  */
 package io.github.benas.randombeans.randomizers.text;
 
-import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
 import static io.github.benas.randombeans.randomizers.text.StringRandomizer.aNewStringRandomizer;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
 
 public class StringRandomizerTest extends AbstractRandomizerTest<String> {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         randomizer = aNewStringRandomizer();
     }
@@ -45,7 +47,7 @@ public class StringRandomizerTest extends AbstractRandomizerTest<String> {
     public void shouldGenerateTheSameValueForTheSameSeed() {
         // Given
         randomizer = aNewStringRandomizer(SEED);
-        String expected = "eOMtThyhVNLWUZNRcBaQKxIy";
+        String expected = "eOMtThyhVNLWUZNRcBaQKxI";
 
         // When
         String actual = randomizer.getRandomValue();
@@ -59,7 +61,7 @@ public class StringRandomizerTest extends AbstractRandomizerTest<String> {
         // Given
         final int maxLength = 10;
         randomizer = aNewStringRandomizer(maxLength, SEED);
-        String expectedValue = "eOM";
+        String expectedValue = "eOMtThy";
 
         // When
         String actual = randomizer.getRandomValue();

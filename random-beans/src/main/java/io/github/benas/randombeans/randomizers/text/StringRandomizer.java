@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -252,11 +252,11 @@ public class StringRandomizer extends AbstractRandomizer<String> {
 
     @Override
     public String getRandomValue() {
-        StringBuilder stringBuilder = new StringBuilder();
-        int length = minLength + random.nextInt(maxLength - minLength + 1);
+        int length = (int) nextDouble(minLength, maxLength);
+        char[] chars = new char[length];
         for (int i = 0; i < length; i++) {
-            stringBuilder.append(characterRandomizer.getRandomValue());
+            chars[i] = characterRandomizer.getRandomValue();
         }
-        return stringBuilder.toString();
+        return new String(chars);
     }
 }

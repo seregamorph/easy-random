@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,25 @@
  */
 package io.github.benas.randombeans;
 
+import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
+import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
+import java.util.function.Supplier;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import io.github.benas.randombeans.api.EnhancedRandom;
 import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.api.RandomizerRegistry;
 import io.github.benas.randombeans.beans.Human;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.function.Supplier;
-
-import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
-import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings("unchecked")
 public class EnhancedRandomBuilderTest {
 
@@ -59,13 +60,6 @@ public class EnhancedRandomBuilderTest {
 
     private EnhancedRandomBuilder enhancedRandomBuilder;
 
-    @Before
-    public void setUp() {
-        when(randomizer.getRandomValue()).thenReturn(NAME);
-        when(supplier.get()).thenReturn(NAME);
-        when(humanRandomizer.getRandomValue()).thenReturn(human);
-    }
-
     @Test
     public void builtInstancesShouldBeDistinct() {
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
@@ -78,6 +72,8 @@ public class EnhancedRandomBuilderTest {
 
     @Test
     public void customRandomizerShouldBeRegisteredInAllBuiltInstances() {
+        when(randomizer.getRandomValue()).thenReturn(NAME);
+
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
         FieldDefinition<?, ?> fieldDefinition = field().named("name").ofType(String.class).inClass(Human.class).get();
@@ -96,6 +92,8 @@ public class EnhancedRandomBuilderTest {
 
     @Test
     public void customSupplierShouldBeRegisteredInAllBuiltInstances() {
+        when(supplier.get()).thenReturn(NAME);
+
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
         FieldDefinition<?, ?> fieldDefinition = field().named("name").ofType(String.class).inClass(Human.class).get();
@@ -114,6 +112,7 @@ public class EnhancedRandomBuilderTest {
 
     @Test
     public void customRandomizerRegistryShouldBeRegisteredInAllBuiltInstances() {
+        when(humanRandomizer.getRandomValue()).thenReturn(human);
         when(randomizerRegistry.getRandomizer(Human.class)).thenReturn(humanRandomizer);
         enhancedRandomBuilder = aNewEnhancedRandomBuilder().registerRandomizerRegistry(randomizerRegistry);
 
@@ -128,18 +127,18 @@ public class EnhancedRandomBuilderTest {
         assertThat(actual).isEqualTo(human);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void shouldNotAllowNegativeMinStringLength() {
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
-        enhancedRandomBuilder.stringLengthRange(-1, 10).build();
+        assertThatThrownBy(() -> enhancedRandomBuilder.stringLengthRange(-1, 10).build()).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void shouldNotAllowMinStringLengthGreaterThanMaxStringLength() {
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
-        enhancedRandomBuilder.stringLengthRange(2, 1).build();
+        assertThatThrownBy(() -> enhancedRandomBuilder.stringLengthRange(2, 1).build()).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

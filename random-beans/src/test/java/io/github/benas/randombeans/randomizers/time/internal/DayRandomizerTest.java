@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,19 @@
  */
 package io.github.benas.randombeans.randomizers.time.internal;
 
-import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
-import io.github.benas.randombeans.randomizers.time.DayRandomizer;
-import org.junit.Before;
-import org.junit.Test;
-
 import static io.github.benas.randombeans.randomizers.time.DayRandomizer.MAX_DAY;
 import static io.github.benas.randombeans.randomizers.time.DayRandomizer.MIN_DAY;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
+import io.github.benas.randombeans.randomizers.time.DayRandomizer;
+
 public class DayRandomizerTest extends AbstractRandomizerTest<Integer> {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         randomizer = new DayRandomizer();
     }

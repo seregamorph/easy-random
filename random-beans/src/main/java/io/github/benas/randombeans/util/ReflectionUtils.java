@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package io.github.benas.randombeans.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.benas.randombeans.PrimitiveEnum;
 import io.github.benas.randombeans.annotation.RandomizerArgument;
 import io.github.benas.randombeans.api.ObjectGenerationException;
 import io.github.benas.randombeans.api.Randomizer;
@@ -34,6 +33,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static io.github.benas.randombeans.util.DateUtils.DATE_FORMAT;
 import static java.lang.String.format;
@@ -336,7 +336,7 @@ public class ReflectionUtils {
      * @return a list of all concrete subtypes found
      */
     public static <T> List<Class<?>> getPublicConcreteSubTypesOf(final Class<T> type) {
-        return FastClasspathScannerFacade.getPublicConcreteSubTypesOf(type);
+        return ClassGraphFacade.getPublicConcreteSubTypesOf(type);
     }
 
     /**
@@ -429,8 +429,7 @@ public class ReflectionUtils {
     public static <T> Randomizer<T> newInstance(final Class<T> type, final RandomizerArgument[] randomizerArguments) {
         try {
             if (notEmpty(randomizerArguments)) {
-                Optional<Constructor<?>> matchingConstructor = asList(type.getConstructors())
-                        .stream()
+                Optional<Constructor<?>> matchingConstructor = Stream.of(type.getConstructors())
                         .filter(constructor -> hasSameArgumentNumber(constructor, randomizerArguments) &&
                                 hasSameArgumentTypes(constructor, randomizerArguments))
                         .findFirst();
@@ -467,7 +466,14 @@ public class ReflectionUtils {
         int numberOfArguments = declaredArguments.length;
         Object[] arguments = new Object[numberOfArguments];
         for (int i = 0; i < numberOfArguments; i++) {
-            arguments[i] = objectMapper.convertValue(declaredArguments[i].value(), declaredArguments[i].type());
+            Class<?> type = declaredArguments[i].type();
+            String argument = declaredArguments[i].value();
+            Object value = argument;
+            // issue 299: if argument type is array, split values before conversion
+            if (type.isArray()) {
+                value = Stream.of(argument.split(",")).map(String::trim).toArray();
+            }
+            arguments[i] = objectMapper.convertValue(value, type);
         }
         return arguments;
     }

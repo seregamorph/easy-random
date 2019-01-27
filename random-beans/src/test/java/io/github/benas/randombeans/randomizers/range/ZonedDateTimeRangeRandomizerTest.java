@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +25,12 @@ package io.github.benas.randombeans.randomizers.range;
 
 import static io.github.benas.randombeans.randomizers.range.ZonedDateTimeRangeRandomizer.aNewZonedDateTimeRangeRandomizer;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.ZonedDateTime;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.github.benas.randombeans.util.Constants;
 
@@ -37,7 +38,7 @@ public class ZonedDateTimeRangeRandomizerTest extends AbstractRangeRandomizerTes
 
     private ZonedDateTime minZonedDateTime, maxZonedDateTime;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         minZonedDateTime = Constants.DEFAULT_DATES_RANGE.getMin().minusYears(50);
         maxZonedDateTime = Constants.DEFAULT_DATES_RANGE.getMax().plusYears(50);
@@ -67,9 +68,9 @@ public class ZonedDateTimeRangeRandomizerTest extends AbstractRangeRandomizerTes
         assertThat(randomValue).isEqualTo(expected);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSpecifiedMinZonedDateTimeIsAfterMaxZonedDateTime_thenShouldThrowIllegalArgumentException() {
-        aNewZonedDateTimeRangeRandomizer(maxZonedDateTime, minZonedDateTime);
+        assertThatThrownBy(() -> aNewZonedDateTimeRangeRandomizer(maxZonedDateTime, minZonedDateTime)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

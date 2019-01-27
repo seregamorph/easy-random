@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -98,10 +98,10 @@ public class ZonedDateTimeRangeRandomizer extends AbstractRangeRandomizer<ZonedD
     public ZonedDateTime getRandomValue() {
         long minSeconds = min.toEpochSecond();
         long maxSeconds = max.toEpochSecond();
-        long seconds = nextLong(minSeconds, maxSeconds);
+        long seconds = (long) nextDouble(minSeconds, maxSeconds);
         int minNanoSeconds = min.getNano();
         int maxNanoSeconds = max.getNano();
-        long nanoSeconds = nextLong(minNanoSeconds, maxNanoSeconds);
+        long nanoSeconds = (long) nextDouble(minNanoSeconds, maxNanoSeconds);
         return ZonedDateTime.ofInstant(Instant.ofEpochSecond(seconds, nanoSeconds), min.getZone());
     }
 

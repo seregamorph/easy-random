@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,23 @@
  */
 package io.github.benas.randombeans;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.lang.reflect.Field;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import io.github.benas.randombeans.api.EnhancedRandomParameters;
 import io.github.benas.randombeans.beans.Address;
 import io.github.benas.randombeans.beans.Person;
 import io.github.benas.randombeans.util.Constants;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import java.lang.reflect.Field;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RandomizationContextTest {
 
     @Mock
@@ -48,15 +49,14 @@ public class RandomizationContextTest {
 
     private RandomizationContext randomizationContext;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(parameters.getObjectPoolSize()).thenReturn(Constants.DEFAULT_OBJECT_POOL_SIZE);
-        when(parameters.getRandomizationDepth()).thenReturn(Constants.DEFAULT_RANDOMIZATION_DEPTH);
         randomizationContext = new RandomizationContext(parameters);
     }
 
     @Test
     public void whenATypeHasBeenRandomized_thenHasPopulatedBeanShouldReturnTrueOnlyWhenTheObjectPoolIsFilled() {
+        when(parameters.getObjectPoolSize()).thenReturn(Constants.DEFAULT_OBJECT_POOL_SIZE);
 
         // Only one instance has been randomized => should be considered as not randomized yet
         randomizationContext.addPopulatedBean(String.class, "bean" + 0);
@@ -83,6 +83,8 @@ public class RandomizationContextTest {
 
     @Test
     public void whenATypeHasBeenRandomized_thenTheRandomizedBeanShouldBeRetrievedFromTheObjectPool() {
+        when(parameters.getObjectPoolSize()).thenReturn(Constants.DEFAULT_OBJECT_POOL_SIZE);
+
         // Given
         randomizationContext.addPopulatedBean(String.class, bean1);
         randomizationContext.addPopulatedBean(String.class, bean2);

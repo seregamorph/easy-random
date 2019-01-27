@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -47,11 +47,31 @@ public abstract class AbstractRandomizer<T> implements Randomizer<T>  {
     }
 
     protected String[] getPredefinedValuesOf(final String key) {
-        return getBundle("data").getString(key).split(",");
+        return getBundle("random-beans-data").getString(key).split(",");
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
+    }
+
+    /**
+     * Return a random double in the given range.
+     *
+     * @param min value
+     * @param max value
+     * @return random double in the given range
+     */
+    protected double nextDouble(final double min, final double max) {
+        double value = min + (random.nextDouble() * (max - min));
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return value;
+        }
+        // NB: ThreadLocalRandom.current().nextDouble(min, max)) cannot be use because the seed is not configurable
+        // and is created per thread (see Javadoc)
     }
 }

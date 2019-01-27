@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,13 @@ import static io.github.benas.randombeans.randomizers.jodatime.range.JodaTimeLoc
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.then;
 
-import org.joda.time.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.randomizers.jodatime.range.JodaTimeDateTimeRangeRandomizer;
@@ -44,10 +44,8 @@ import io.github.benas.randombeans.randomizers.jodatime.range.JodaTimeLocalDateR
 import io.github.benas.randombeans.randomizers.jodatime.range.JodaTimeLocalDateTimeRangeRandomizer;
 import io.github.benas.randombeans.randomizers.jodatime.range.JodaTimeLocalTimeRangeRandomizer;
 
-@RunWith(DataProviderRunner.class)
 public class JodaTimeRangeRandomizersTest extends AbstractJodaTimeRandomizerTest {
 
-    @DataProvider
     public static Object[] generateRandomizers() {
         return new Object[] {
                 new JodaTimeDateTimeRangeRandomizer(),
@@ -57,8 +55,8 @@ public class JodaTimeRangeRandomizersTest extends AbstractJodaTimeRandomizerTest
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateRandomizers")
     public void generatedTimeShouldNotBeNull(Randomizer<?> randomizer) {
         // when
         Object randomNumber = randomizer.getRandomValue();
@@ -66,7 +64,6 @@ public class JodaTimeRangeRandomizersTest extends AbstractJodaTimeRandomizerTest
         then(randomNumber).isNotNull();
     }
 
-    @DataProvider
     public static Object[][] generateRandomizersAndMinMax() {
         LocalDateTime localDateTimeMin = LocalDateTime.parse("2016-01-18T19:34:04.570");
         LocalDateTime localDateTimeMax = LocalDateTime.parse("2016-01-18T20:34:14.570");
@@ -84,8 +81,8 @@ public class JodaTimeRangeRandomizersTest extends AbstractJodaTimeRandomizerTest
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizersAndMinMax")
+    @ParameterizedTest
+    @MethodSource("generateRandomizersAndMinMax")
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void shouldGenerateValuesBetweenMinAndMax(Randomizer<Comparable> randomizer, Comparable min, Comparable max) {
         // when

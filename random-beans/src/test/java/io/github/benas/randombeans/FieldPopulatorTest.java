@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,9 @@
  */
 package io.github.benas.randombeans;
 
-import io.github.benas.randombeans.api.Randomizer;
-import io.github.benas.randombeans.beans.*;
-import io.github.benas.randombeans.randomizers.misc.SkipRandomizer;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -41,11 +35,21 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+import io.github.benas.randombeans.api.Randomizer;
+import io.github.benas.randombeans.beans.ArrayBean;
+import io.github.benas.randombeans.beans.CollectionBean;
+import io.github.benas.randombeans.beans.Human;
+import io.github.benas.randombeans.beans.MapBean;
+import io.github.benas.randombeans.beans.Person;
+import io.github.benas.randombeans.randomizers.misc.SkipRandomizer;
+
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings("unchecked")
 public class FieldPopulatorTest {
 
@@ -68,7 +72,7 @@ public class FieldPopulatorTest {
 
     private FieldPopulator fieldPopulator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         fieldPopulator = new FieldPopulator(enhancedRandom, randomizerProvider, arrayPopulator, collectionPopulator, mapPopulator);
     }

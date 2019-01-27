@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,23 @@
  */
 package io.github.benas.randombeans;
 
-import io.github.benas.randombeans.api.EnhancedRandom;
-import io.github.benas.randombeans.api.ObjectGenerationException;
-import io.github.benas.randombeans.api.Randomizer;
-import io.github.benas.randombeans.beans.*;
-import io.github.benas.randombeans.randomizers.misc.ConstantRandomizer;
-import io.github.benas.randombeans.util.ReflectionUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandom;
+import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
+import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
+import static io.github.benas.randombeans.api.EnhancedRandom.random;
+import static io.github.benas.randombeans.api.EnhancedRandom.randomCollectionOf;
+import static io.github.benas.randombeans.api.EnhancedRandom.randomListOf;
+import static io.github.benas.randombeans.api.EnhancedRandom.randomSetOf;
+import static io.github.benas.randombeans.api.EnhancedRandom.randomStreamOf;
+import static java.sql.Timestamp.valueOf;
+import static java.time.LocalDateTime.of;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Modifier;
 import java.util.Collection;
@@ -43,20 +48,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandom;
-import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
-import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
-import static io.github.benas.randombeans.api.EnhancedRandom.*;
-import static java.sql.Timestamp.valueOf;
-import static java.time.LocalDateTime.of;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.Mockito.when;
+import io.github.benas.randombeans.beans.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+import io.github.benas.randombeans.api.EnhancedRandom;
+import io.github.benas.randombeans.api.ObjectGenerationException;
+import io.github.benas.randombeans.api.Randomizer;
+import io.github.benas.randombeans.randomizers.misc.ConstantRandomizer;
+import io.github.benas.randombeans.util.ReflectionUtils;
+
+@ExtendWith(MockitoExtension.class)
 public class EnhancedRandomImplTest {
 
     private static final String FOO = "foo";
@@ -67,10 +73,9 @@ public class EnhancedRandomImplTest {
 
     private EnhancedRandom enhancedRandom;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         enhancedRandom = aNewEnhancedRandom();
-        when(randomizer.getRandomValue()).thenReturn(FOO);
     }
 
     @Test
@@ -136,6 +141,8 @@ public class EnhancedRandomImplTest {
 
     @Test
     public void customRandomzierForFieldsShouldBeUsedToPopulateObjects() {
+        when(randomizer.getRandomValue()).thenReturn(FOO);
+
         FieldDefinition<?, ?> fieldDefinition = field().named("name").ofType(String.class).inClass(Human.class).get();
         enhancedRandom = aNewEnhancedRandomBuilder()
                 .randomize(fieldDefinition, randomizer)
@@ -149,6 +156,8 @@ public class EnhancedRandomImplTest {
 
     @Test
     public void customRandomzierForFieldsShouldBeUsedToPopulateFieldsWithOneModifier() {
+        when(randomizer.getRandomValue()).thenReturn(FOO);
+
         // Given
         FieldDefinition<?, ?> fieldDefinition = field().hasModifiers(Modifier.TRANSIENT).ofType(String.class).get();
         EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
@@ -165,6 +174,7 @@ public class EnhancedRandomImplTest {
     @Test
     public void customRandomzierForFieldsShouldBeUsedToPopulateFieldsWithMultipleModifier() {
         // Given
+        when(randomizer.getRandomValue()).thenReturn(FOO);
         int modifiers = Modifier.TRANSIENT | Modifier.PROTECTED;
         FieldDefinition<?, ?> fieldDefinition = field().hasModifiers(modifiers).ofType(String.class).get();
         EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
@@ -180,6 +190,8 @@ public class EnhancedRandomImplTest {
 
     @Test
     public void customRandomzierForTypesShouldBeUsedToPopulateObjects() {
+        when(randomizer.getRandomValue()).thenReturn(FOO);
+
         enhancedRandom = aNewEnhancedRandomBuilder()
                 .randomize(String.class, randomizer)
                 .build();
@@ -191,6 +203,8 @@ public class EnhancedRandomImplTest {
 
     @Test
     public void customRandomzierForTypesShouldBeUsedToPopulateFields() {
+        when(randomizer.getRandomValue()).thenReturn(FOO);
+
         enhancedRandom = aNewEnhancedRandomBuilder()
                 .randomize(String.class, randomizer)
                 .build();
@@ -200,23 +214,21 @@ public class EnhancedRandomImplTest {
         assertThat(human.getName()).isEqualTo(FOO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void ambiguousFieldDefinitionShouldBeRejected() {
-        enhancedRandom = aNewEnhancedRandomBuilder()
+        assertThatThrownBy(() -> enhancedRandom = aNewEnhancedRandomBuilder()
                 .randomize(field().named("name").get(), new ConstantRandomizer<>("name"))
-                .build();
-
-        enhancedRandom.nextObject(Person.class);
+                .build()).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSpecifiedNumberOfBeansToGenerateIsNegative_thenShouldThrowAnIllegalArgumentException() {
-        enhancedRandom.objects(Person.class, -2);
+        assertThatThrownBy(() -> enhancedRandom.objects(Person.class, -2)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expected = ObjectGenerationException.class)
+    @Test
     public void whenUnableToInstantiateField_thenShouldThrowObjectGenerationException() {
-        enhancedRandom.nextObject(AbstractBean.class);
+        assertThatThrownBy(() -> enhancedRandom.nextObject(AbstractBean.class)).isInstanceOf(ObjectGenerationException.class);
     }
 
     @Test
@@ -251,6 +263,17 @@ public class EnhancedRandomImplTest {
         assertThat(distinctEnumBeans.size()).isGreaterThan(1);
     }
 
+    @Test
+    public void fieldsOfTypeClassShouldBeSkipped() {
+        try {
+            TestBean testBean = enhancedRandom.nextObject(TestBean.class);
+            assertThat(testBean.getException()).isNotNull();
+            assertThat(testBean.getClazz()).isNull();
+        } catch (Exception e) {
+            fail("Should skip fields of type Class");
+        }
+    }
+
     private void validatePerson(final Person person) {
         assertThat(person).isNotNull();
         assertThat(person.getEmail()).isNotEmpty();
@@ -278,7 +301,7 @@ public class EnhancedRandomImplTest {
         persons.forEach(this::validatePerson);
     }
 
-    @Ignore("Dummy test to see possible reasons of randomization failures")
+    @Disabled("Dummy test to see possible reasons of randomization failures")
     @Test
     public void tryToRandomizeAllPublicConcreteTypesInTheClasspath(){
         int success = 0;

@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,16 @@
  */
 package io.github.benas.randombeans.parameters;
 
+import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+
 import io.github.benas.randombeans.api.EnhancedRandom;
 import io.github.benas.randombeans.beans.Address;
 import io.github.benas.randombeans.beans.Gender;
 import io.github.benas.randombeans.beans.Person;
 import io.github.benas.randombeans.beans.Street;
-import org.junit.Test;
-
-import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class SeedParameterTests {
 
@@ -42,7 +43,7 @@ public class SeedParameterTests {
         // Given
         EnhancedRandom enhancedRandom = aNewEnhancedRandomBuilder().seed(SEED).build();
 
-        String expectedString = "eOMtThyhVNLWUZNRcBaQKxIy";
+        String expectedString = "eOMtThyhVNLWUZNRcBaQKxI";
         Person expectedPerson = buildExpectedPerson();
         int[] expectedInts = buildExpectedInts();
 
@@ -53,7 +54,7 @@ public class SeedParameterTests {
 
         // Then
         assertThat(actualString).isEqualTo(expectedString);
-        assertThat(actualPerson).isEqualTo(expectedPerson);
+        assertThat(actualPerson).isEqualToIgnoringNullFields(expectedPerson);
         assertThat(actualInts).isEqualTo(expectedInts);
     }
 
@@ -61,19 +62,19 @@ public class SeedParameterTests {
         Person expectedPerson = new Person();
 
         Street street = new Street();
-        street.setName("elQbxeTeQOvaScfqIOOmaaJxkyvRnLRY");
+        street.setName("JxkyvRnL");
         street.setNumber(-1188957731);
         street.setType((byte) -35);
 
         Address address = new Address();
-        address.setCity("CBRQDSxVL");
-        address.setCountry("hpfQGTMDYpsBZxvfBoe");
-        address.setZipCode("tGKbgicZaH");
+        address.setCity("VLhpfQGTMDYpsBZxvfBoeygjb");
+        address.setCountry("UMaAIKKIkknjWEXJUfPxxQHeWKEJ");
+        address.setZipCode("RYtGKbgicZaHCBRQDSx");
         address.setStreet(street);
 
-        expectedPerson.setName("wCTSeCODYsELoVqtepGSijxlz");
-        expectedPerson.setEmail("edUsFwdk");
-        expectedPerson.setPhoneNumber("ygjbUMaAIKKIkknjWEXJ");
+        expectedPerson.setName("LYBGAUWHm");
+        expectedPerson.setEmail("yedUsFwdkelQbxeTeQOvaScfqIOOmaa");
+        expectedPerson.setPhoneNumber("dpHYZGhtgdntugzvvKAXLhM");
         expectedPerson.setGender(Gender.FEMALE);
         expectedPerson.setAddress(address);
 

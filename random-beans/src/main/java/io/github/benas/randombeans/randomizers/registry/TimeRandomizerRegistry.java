@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -73,6 +73,7 @@ public class TimeRandomizerRegistry implements RandomizerRegistry {
         randomizers.put(Year.class, new YearRandomizer(seed));
         randomizers.put(ZonedDateTime.class, new ZonedDateTimeRandomizer(seed));
         randomizers.put(ZoneOffset.class, new ZoneOffsetRandomizer(seed));
+        randomizers.put(ZoneId.class, new ZoneIdRandomizer(seed));
     }
 
     @Override

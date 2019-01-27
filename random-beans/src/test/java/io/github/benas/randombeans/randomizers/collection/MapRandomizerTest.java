@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,25 @@
  */
 package io.github.benas.randombeans.randomizers.collection;
 
-import io.github.benas.randombeans.api.Randomizer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import static io.github.benas.randombeans.randomizers.collection.MapRandomizer.aNewMapRandomizer;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.github.benas.randombeans.api.Randomizer;
+
+@ExtendWith(MockitoExtension.class)
 public class MapRandomizerTest {
 
     @Mock
     private Randomizer<Integer> keyRandomizer;
     @Mock
     private Randomizer<String> valueRandomizer;
-
-    @Before
-    public void setUp() {
-        when(keyRandomizer.getRandomValue()).thenReturn(1, 2, 3);
-        when(valueRandomizer.getRandomValue()).thenReturn("a", "b", "c");
-    }
 
     @Test
     public void generatedMapShouldNotBeEmpty() {
@@ -55,6 +50,7 @@ public class MapRandomizerTest {
 
     @Test
     public void generatedMapSizeShouldBeEqualToTheSpecifiedSize() {
+        when(keyRandomizer.getRandomValue()).thenReturn(1, 2, 3);
         assertThat(aNewMapRandomizer(keyRandomizer, valueRandomizer, 3).getRandomValue()).hasSize(3);
     }
 
@@ -63,18 +59,18 @@ public class MapRandomizerTest {
         assertThat(aNewMapRandomizer(keyRandomizer, valueRandomizer, 0).getRandomValue()).isEmpty();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void specifiedSizeShouldBePositive() {
-        aNewMapRandomizer(keyRandomizer, valueRandomizer, -3);
+        assertThatThrownBy(() -> aNewMapRandomizer(keyRandomizer, valueRandomizer, -3)).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullKeyRandomizer() {
-        aNewMapRandomizer(null, valueRandomizer, 3);
+        assertThatThrownBy(() -> aNewMapRandomizer(null, valueRandomizer, 3)).isInstanceOf(NullPointerException.class);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void nullValueRandomizer() {
-        aNewMapRandomizer(keyRandomizer, null, 3);
+        assertThatThrownBy(() -> aNewMapRandomizer(keyRandomizer, null, 3)).isInstanceOf(NullPointerException.class);
     }
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +23,17 @@
  */
 package io.github.benas.randombeans.randomizers.range;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static io.github.benas.randombeans.randomizers.range.DoubleRangeRandomizer.aNewDoubleRangeRandomizer;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DoubleRangeRandomizerTest extends AbstractRangeRandomizerTest<Double> {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         min = 1d;
         max = 10d;
@@ -45,9 +46,9 @@ public class DoubleRangeRandomizerTest extends AbstractRangeRandomizerTest<Doubl
         assertThat(randomValue).isBetween(min, max);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSpecifiedMinValueIsAfterMaxValueThenThrowIllegalArgumentException() {
-        aNewDoubleRangeRandomizer(max, min);
+        assertThatThrownBy(() -> aNewDoubleRangeRandomizer(max, min)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -72,7 +73,20 @@ public class DoubleRangeRandomizerTest extends AbstractRangeRandomizerTest<Doubl
         // when
         Double d = doubleRangeRandomizer.getRandomValue();
 
-        then(d).isEqualTo(7.0);
+        then(d).isEqualTo(7.508567826974321);
     }
 
+    /* This test is for the first comment on https://stackoverflow.com/a/3680648/5019386. This test
+     * never fails (tested with IntelliJ's feature "Repeat Test Until Failure") */
+    /*
+    @Test
+    void testInfinity() {
+        // given
+        DoubleRangeRandomizer doubleRangeRandomizer = aNewDoubleRangeRandomizer(-Double.MAX_VALUE, Double.MAX_VALUE);
+
+        // when
+        Double d = doubleRangeRandomizer.getRandomValue();
+
+        then(d).isNotNull();
+    }*/
 }

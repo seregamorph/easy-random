@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,6 @@
  */
 package io.github.benas.randombeans;
 
-import io.github.benas.randombeans.api.EnhancedRandom;
-import io.github.benas.randombeans.beans.Address;
-import io.github.benas.randombeans.beans.Website;
-import io.github.benas.randombeans.beans.exclusion.C;
-import io.github.benas.randombeans.beans.Human;
-import io.github.benas.randombeans.beans.Person;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandom;
 import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
 import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
@@ -43,12 +32,24 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.github.benas.randombeans.api.EnhancedRandom;
+import io.github.benas.randombeans.beans.Address;
+import io.github.benas.randombeans.beans.Human;
+import io.github.benas.randombeans.beans.Person;
+import io.github.benas.randombeans.beans.Website;
+import io.github.benas.randombeans.beans.exclusion.C;
+
+@ExtendWith(MockitoExtension.class)
 public class FieldExclusionTest {
 
     private EnhancedRandom enhancedRandom;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         enhancedRandom = aNewEnhancedRandom();
     }

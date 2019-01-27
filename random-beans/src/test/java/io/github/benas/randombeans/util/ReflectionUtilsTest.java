@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,14 @@
 package io.github.benas.randombeans.util;
 
 import io.github.benas.randombeans.beans.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,10 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testGetDeclaredFields() throws Exception {
-        if (System.getProperty("java.specification.version").startsWith("9")) {
+        BigDecimal javaVersion = new BigDecimal(System.getProperty("java.specification.version"));
+        if (javaVersion.compareTo(new BigDecimal("12")) >= 0) {
+            assertThat(ReflectionUtils.getDeclaredFields(Street.class)).hasSize(21);
+        } else if (javaVersion.compareTo(new BigDecimal("9")) >= 0) {
             assertThat(ReflectionUtils.getDeclaredFields(Street.class)).hasSize(22);
         } else {
             assertThat(ReflectionUtils.getDeclaredFields(Street.class)).hasSize(20);

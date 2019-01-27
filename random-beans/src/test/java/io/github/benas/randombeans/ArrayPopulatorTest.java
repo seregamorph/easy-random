@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,24 @@
  */
 package io.github.benas.randombeans;
 
-import io.github.benas.randombeans.api.EnhancedRandom;
-import io.github.benas.randombeans.api.Randomizer;
-import io.github.benas.randombeans.beans.ArrayBean;
-import io.github.benas.randombeans.beans.Person;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.lang.reflect.Array;
-
 import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.lang.reflect.Array;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.github.benas.randombeans.api.EnhancedRandom;
+import io.github.benas.randombeans.api.Randomizer;
+import io.github.benas.randombeans.beans.ArrayBean;
+import io.github.benas.randombeans.beans.Person;
+
+@ExtendWith(MockitoExtension.class)
 public class ArrayPopulatorTest {
 
     private static final int INT = 10;
@@ -56,22 +57,16 @@ public class ArrayPopulatorTest {
 
     private ArrayPopulator arrayPopulator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         arrayPopulator = new ArrayPopulator(enhancedRandom, randomizerProvider);
-        when(enhancedRandom.nextInt()).thenReturn(INT);
-        when(enhancedRandom.getRandomCollectionSize()).thenReturn(INT);
-        when(randomizerProvider.getRandomizerByType(Integer.TYPE)).thenReturn(integerRandomizer);
-        when(integerRandomizer.getRandomValue()).thenReturn(INT);
-        when(enhancedRandom.doPopulateBean(String.class, context)).thenReturn(STRING);
     }
-
-    /*
-     * Unit tests for ArrayPopulator class
-     */
 
     @Test
     public void getRandomArray() {
+        when(enhancedRandom.getRandomCollectionSize()).thenReturn(INT);
+        when(enhancedRandom.doPopulateBean(String.class, context)).thenReturn(STRING);
+
         String[] strings = (String[]) arrayPopulator.getRandomArray(String[].class, context);
 
         assertThat(strings).containsOnly(STRING);
@@ -79,6 +74,10 @@ public class ArrayPopulatorTest {
 
     @Test
     public void getRandomPrimitiveArray() {
+        when(enhancedRandom.nextInt()).thenReturn(INT);
+        when(randomizerProvider.getRandomizerByType(Integer.TYPE)).thenReturn(integerRandomizer);
+        when(integerRandomizer.getRandomValue()).thenReturn(INT);
+
         int[] ints = (int[]) arrayPopulator.getRandomPrimitiveArray(Integer.TYPE);
 
         assertThat(ints).containsOnly(INT);

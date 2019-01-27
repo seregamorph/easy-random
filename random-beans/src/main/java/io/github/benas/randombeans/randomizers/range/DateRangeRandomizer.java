@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ public class DateRangeRandomizer extends AbstractRangeRandomizer<Date> {
     public Date getRandomValue() {
         long minDateTime = min.getTime();
         long maxDateTime = max.getTime();
-        long randomDateTime = nextLong(minDateTime, maxDateTime);
+        long randomDateTime = (long) nextDouble((double) minDateTime, (double) maxDateTime);
         return new Date(randomDateTime);
     }
 

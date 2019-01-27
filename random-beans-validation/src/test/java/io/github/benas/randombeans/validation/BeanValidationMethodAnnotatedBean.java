@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,20 @@ class BeanValidationMethodAnnotatedBean {
     private BigDecimal maxDiscount;
 
     private BigDecimal minDiscount;
+
+    private BigDecimal discount;
+
+    private int positive;
+
+    private int positiveOrZero;
+
+    private int negative;
+
+    private int negativeOrZero;
+
+    private String notBlank;
+
+    private String email;
 
     private Date eventDate;
 
@@ -85,8 +99,55 @@ class BeanValidationMethodAnnotatedBean {
         return minDiscount;
     }
 
+    @DecimalMax("1.00")
+    @DecimalMin("0.01")
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+
     public void setMinDiscount(BigDecimal minDiscount) {
         this.minDiscount = minDiscount;
+    }
+
+    @Positive
+    public int getPositive() {
+        return positive;
+    }
+
+    public void setPositive(int positive) {
+        this.positive = positive;
+    }
+
+
+    @PositiveOrZero
+    public int getPositiveOrZero() {
+        return positiveOrZero;
+    }
+
+    public void setPositiveOrZero(int positiveOrZero) {
+        this.positiveOrZero = positiveOrZero;
+    }
+
+    @Negative
+    public int getNegative() {
+        return negative;
+    }
+
+    public void setNegative(int negative) {
+        this.negative = negative;
+    }
+
+    @NegativeOrZero
+    public int getNegativeOrZero() {
+        return negativeOrZero;
+    }
+
+    public void setNegativeOrZero(int negativeOrZero) {
+        this.negativeOrZero = negativeOrZero;
     }
 
     @Future
@@ -161,22 +222,46 @@ class BeanValidationMethodAnnotatedBean {
         this.regexString = regexString;
     }
 
+    @NotBlank
+    public String getNotBlank() {
+        return notBlank;
+    }
+
+    public void setNotBlank(String notBlank) {
+        this.notBlank = notBlank;
+    }
+
+    @Email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("BeanValidationAnnotatedBean{");
-        sb.append("unsupported=").append(unsupported);
-        sb.append(", active=").append(active);
-        sb.append(", maxDiscount=").append(maxDiscount);
-        sb.append(", minDiscount=").append(minDiscount);
-        sb.append(", eventDate=").append(eventDate);
-        sb.append(", birthday=").append(birthday);
-        sb.append(", maxQuantity=").append(maxQuantity);
-        sb.append(", minQuantity=").append(minQuantity);
-        sb.append(", username='").append(username).append('\'');
-        sb.append(", unusedString='").append(unusedString).append('\'');
-        sb.append(", briefMessage='").append(briefMessage).append('\'');
-        sb.append(", regexString=").append(regexString).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "BeanValidationMethodAnnotatedBean{" +
+                "unsupported=" + unsupported +
+                ", active=" + active +
+                ", maxDiscount=" + maxDiscount +
+                ", minDiscount=" + minDiscount +
+                ", discount=" + discount +
+                ", positive=" + positive +
+                ", positiveOrZero=" + positiveOrZero +
+                ", negative=" + negative +
+                ", negativeOrZero=" + negativeOrZero +
+                ", notBlank='" + notBlank + '\'' +
+                ", email='" + email + '\'' +
+                ", eventDate=" + eventDate +
+                ", birthday=" + birthday +
+                ", maxQuantity=" + maxQuantity +
+                ", minQuantity=" + minQuantity +
+                ", username='" + username + '\'' +
+                ", unusedString='" + unusedString + '\'' +
+                ", briefMessage='" + briefMessage + '\'' +
+                ", regexString='" + regexString + '\'' +
+                '}';
     }
 }

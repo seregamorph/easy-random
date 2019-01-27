@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -37,19 +37,13 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.benas.randombeans.api.Randomizer;
 
-@RunWith(DataProviderRunner.class)
 public class JodaTimeRandomizersTest extends AbstractJodaTimeRandomizerTest {
 
-    @DataProvider
     public static Object[] generateRandomizers() {
         return new Object[] {
                 aNewJodaTimeDurationRandomizer(),
@@ -61,8 +55,8 @@ public class JodaTimeRandomizersTest extends AbstractJodaTimeRandomizerTest {
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateRandomizers")
     public void generatedTimeShouldNotBeNull(Randomizer<?> randomizer) {
         // when
         Object randomNumber = randomizer.getRandomValue();
@@ -70,7 +64,6 @@ public class JodaTimeRandomizersTest extends AbstractJodaTimeRandomizerTest {
         then(randomNumber).isNotNull();
     }
 
-    @DataProvider
     public static Object[][] generateSeededRandomizersAndTheirExpectedValues() {
         return new Object[][] {
             { aNewJodaTimeDurationRandomizer(SEED), new Duration(1718733244570L) },
@@ -82,8 +75,8 @@ public class JodaTimeRandomizersTest extends AbstractJodaTimeRandomizerTest {
         };
     }
 
-    @Test
-    @UseDataProvider("generateSeededRandomizersAndTheirExpectedValues")
+    @ParameterizedTest
+    @MethodSource("generateSeededRandomizersAndTheirExpectedValues")
     public void shouldGenerateTheSameValueForTheSameSeed(Randomizer<?> randomizer, Object expected) {
         //when
         Object actual = randomizer.getRandomValue();

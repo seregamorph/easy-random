@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -21,37 +21,29 @@
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *   THE SOFTWARE.
  */
-package io.github.benas.randombeans;
+package io.github.benas.randombeans.validation;
 
-/**
- * Wrapper for primitive TYPE values and their classes.
- *
- * @author Sam Van Overmeire
- */
-public enum PrimitiveEnum {
+import io.github.benas.randombeans.api.Randomizer;
+import io.github.benas.randombeans.randomizers.text.StringRandomizer;
+import io.github.benas.randombeans.util.ReflectionUtils;
 
-    BYTE(Byte.TYPE, Byte.class),
-    SHORT(Short.TYPE, Short.class),
-    INTEGER(Integer.TYPE, Integer.class),
-    LONG(Long.TYPE, Long.class),
-    FLOAT(Float.TYPE, Float.class),
-    DOUBLE(Double.TYPE, Double.class),
-    BOOLEAN(Boolean.TYPE, Boolean.class),
-    CHARACTER(Character.TYPE, Character.class);
+import javax.validation.constraints.NotBlank;
+import java.lang.reflect.Field;
+import java.util.Random;
 
-    private Class<?> type;
-    private Class<?> clazz;
+class NotBlankAnnotationHandler implements BeanValidationAnnotationHandler {
 
-    PrimitiveEnum(Class<?> type, Class<?> clazz) {
-        this.type = type;
-        this.clazz = clazz;
+    private final Random random;
+
+    NotBlankAnnotationHandler(final long seed) {
+        random = new Random(seed);
     }
 
-    public Class<?> getType() {
-        return type;
-    }
-
-    public Class<?> getClazz() {
-        return clazz;
+    @Override
+    public Randomizer<?> getRandomizer(Field field) {
+        if (ReflectionUtils.isAnnotationPresent(field, NotBlank.class)) {
+            return new StringRandomizer(random.nextLong());
+        }
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,18 @@
  */
 package io.github.benas.randombeans.randomizers;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static io.github.benas.randombeans.randomizers.GenericStringRandomizer.aNewGenericStringRandomizer;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GenericStringRandomizerTest extends AbstractRandomizerTest<String> {
 
     private String[] words;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         words = new String[]{"foo", "bar"};
     }

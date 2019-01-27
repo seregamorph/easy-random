@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,6 @@
  */
 package io.github.benas.randombeans.randomizers.number;
 
-import io.github.benas.randombeans.api.Randomizer;
-import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import static io.github.benas.randombeans.randomizers.number.BigDecimalRandomizer.aNewBigDecimalRandomizer;
 import static io.github.benas.randombeans.randomizers.number.BigIntegerRandomizer.aNewBigIntegerRandomizer;
 import static io.github.benas.randombeans.randomizers.number.ByteRandomizer.aNewByteRandomizer;
@@ -42,18 +30,27 @@ import static io.github.benas.randombeans.randomizers.number.DoubleRandomizer.aN
 import static io.github.benas.randombeans.randomizers.number.FloatRandomizer.aNewFloatRandomizer;
 import static io.github.benas.randombeans.randomizers.number.IntegerRandomizer.aNewIntegerRandomizer;
 import static io.github.benas.randombeans.randomizers.number.LongRandomizer.aNewLongRandomizer;
+import static io.github.benas.randombeans.randomizers.number.NumberRandomizer.aNewNumberRandomizer;
 import static io.github.benas.randombeans.randomizers.number.ShortRandomizer.aNewShortRandomizer;
 import static org.assertj.core.api.BDDAssertions.then;
 
-@RunWith(DataProviderRunner.class)
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import io.github.benas.randombeans.api.Randomizer;
+import io.github.benas.randombeans.randomizers.AbstractRandomizerTest;
+
 public class NumberRandomizersTest extends AbstractRandomizerTest<Object> {
 
-    @DataProvider
     public static Object[] generateRandomizers() {
         return new Object[] { 
                 aNewByteRandomizer(),
                 aNewShortRandomizer(),
                 aNewIntegerRandomizer(),
+                aNewNumberRandomizer(),
                 aNewLongRandomizer(),
                 aNewFloatRandomizer(),
                 aNewDoubleRandomizer(),
@@ -62,8 +59,8 @@ public class NumberRandomizersTest extends AbstractRandomizerTest<Object> {
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateRandomizers")
     public void generatedNumberShouldNotBeNull(Randomizer<?> randomizer) {
         // when
         Object randomNumber = randomizer.getRandomValue();
@@ -71,12 +68,12 @@ public class NumberRandomizersTest extends AbstractRandomizerTest<Object> {
         then(randomNumber).isNotNull();
     }
 
-    @DataProvider
     public static Object[][] generateSeededRandomizersAndTheirExpectedValues() {
         return new Object[][] { 
                 { aNewByteRandomizer(SEED), (byte) -35 },
                 { aNewShortRandomizer(SEED), (short) -3619 },
                 { aNewIntegerRandomizer(SEED), -1188957731 },
+                { aNewNumberRandomizer(SEED), -1188957731 },
                 { aNewLongRandomizer(SEED), -5106534569952410475L },
                 { aNewFloatRandomizer(SEED), 0.72317415F },
                 { aNewDoubleRandomizer(SEED), 0.7231742029971469 },
@@ -85,8 +82,8 @@ public class NumberRandomizersTest extends AbstractRandomizerTest<Object> {
         };
     }
 
-    @Test
-    @UseDataProvider("generateSeededRandomizersAndTheirExpectedValues")
+    @ParameterizedTest
+    @MethodSource("generateSeededRandomizersAndTheirExpectedValues")
     public void shouldGenerateTheSameValueForTheSameSeed(Randomizer<?> randomizer, Object expected) {
         //when
         Object actual = randomizer.getRandomValue();

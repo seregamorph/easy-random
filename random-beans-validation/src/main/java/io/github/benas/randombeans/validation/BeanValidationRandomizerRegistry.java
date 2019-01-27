@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -57,10 +57,16 @@ public class BeanValidationRandomizerRegistry implements RandomizerRegistry {
         annotationHandlers.put(Past.class, new PastAnnotationHandler(seed));
         annotationHandlers.put(Min.class, new MinMaxAnnotationHandler(seed));
         annotationHandlers.put(Max.class, new MinMaxAnnotationHandler(seed));
-        annotationHandlers.put(DecimalMin.class, new DecimaMinMaxAnnotationHandler(seed));
-        annotationHandlers.put(DecimalMax.class, new DecimaMinMaxAnnotationHandler(seed));
+        annotationHandlers.put(DecimalMin.class, new DecimalMinMaxAnnotationHandler(seed));
+        annotationHandlers.put(DecimalMax.class, new DecimalMinMaxAnnotationHandler(seed));
         annotationHandlers.put(Pattern.class, new PatternAnnotationHandler(seed));
         annotationHandlers.put(Size.class, new SizeAnnotationHandler(seed, charset));
+        annotationHandlers.put(Positive.class, new PositiveAnnotationHandler(seed));
+        annotationHandlers.put(PositiveOrZero.class, new PositiveOrZeroAnnotationHandler(seed));
+        annotationHandlers.put(Negative.class, new NegativeAnnotationHandler(seed));
+        annotationHandlers.put(NegativeOrZero.class, new NegativeOrZeroAnnotationHandler(seed));
+        annotationHandlers.put(NotBlank.class, new NotBlankAnnotationHandler(seed));
+        annotationHandlers.put(Email.class, new EmailAnnotationHandler(seed));
     }
 
     @Override

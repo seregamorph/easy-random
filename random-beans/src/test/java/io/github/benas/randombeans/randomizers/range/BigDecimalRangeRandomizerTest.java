@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,49 +23,50 @@
  */
 package io.github.benas.randombeans.randomizers.range;
 
-import org.junit.Before;
-import org.junit.Test;
+import static io.github.benas.randombeans.randomizers.range.BigDecimalRangeRandomizer.aNewBigDecimalRangeRandomizer;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import java.math.BigDecimal;
 
-import static io.github.benas.randombeans.randomizers.range.BigDecimalRangeRandomizer.aNewBigDecimalRangeRandomizer;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssertions.then;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BigDecimalRangeRandomizerTest extends AbstractRangeRandomizerTest<BigDecimal> {
 
-    private Long min, max;
+    private Double min, max;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        min = 1L;
-        max = 10L;
-        randomizer = aNewBigDecimalRangeRandomizer(min, max);
+        min = 1.1;
+        max = 9.9;
+        randomizer = new BigDecimalRangeRandomizer(min, max);
     }
 
     @Test
     public void generatedValueShouldBeWithinSpecifiedRange() {
         BigDecimal randomValue = randomizer.getRandomValue();
-        assertThat(randomValue.longValue()).isBetween(min, max);
+        assertThat(randomValue.doubleValue()).isBetween(min, max);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void whenSpecifiedMinValueIsAfterMaxValueThenThrowIllegalArgumentException() {
-        aNewBigDecimalRangeRandomizer(max, min);
+        assertThatThrownBy(() -> aNewBigDecimalRangeRandomizer(max, min)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void whenSpecifiedMinValueIsNullThenShouldUseDefaultMinValue() {
         randomizer = aNewBigDecimalRangeRandomizer(null, max);
         BigDecimal randomBigDecimal = randomizer.getRandomValue();
-        assertThat(randomBigDecimal.longValue()).isLessThanOrEqualTo(max);
+        assertThat(randomBigDecimal.doubleValue()).isLessThanOrEqualTo(max);
     }
 
     @Test
     public void whenSpecifiedMaxvalueIsNullThenShouldUseDefaultMaxValue() {
         randomizer = aNewBigDecimalRangeRandomizer(min, null);
         BigDecimal randomBigDecimal = randomizer.getRandomValue();
-        assertThat(randomBigDecimal.longValue()).isGreaterThanOrEqualTo(min);
+        assertThat(randomBigDecimal.doubleValue()).isGreaterThanOrEqualTo(min);
     }
 
     @Test
@@ -76,7 +77,7 @@ public class BigDecimalRangeRandomizerTest extends AbstractRangeRandomizerTest<B
         // when
         BigDecimal bigDecimal = bigDecimalRangeRandomizer.getRandomValue();
 
-        then(bigDecimal).isEqualTo(new BigDecimal("7"));
+        then(bigDecimal).isEqualTo(new BigDecimal("7.46393298637489266411648713983595371246337890625"));
     }
 
     @Test

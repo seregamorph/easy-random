@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,11 @@ import org.joda.time.Duration;
 /**
  * A {@link Randomizer} that generates random {@link Duration}.
  *
+ * @deprecated This class is deprecated as of v3.8 and will be removed in v4.0
+ *
  * @author Nikola Milivojevic (0dziga0@gmail.com)
  */
+@Deprecated
 public class JodaTimeDurationRandomizer extends JodaTimeAbstractRandomizer<Duration> {
 
     /**

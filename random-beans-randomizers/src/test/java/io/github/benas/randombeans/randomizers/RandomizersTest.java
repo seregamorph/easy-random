@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -46,19 +46,13 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import java.text.DecimalFormatSymbols;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.benas.randombeans.api.Randomizer;
 
-@RunWith(DataProviderRunner.class)
 public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer<?>>{
 
-    @DataProvider
     public static Object[] generateRandomizers() {
         return new Object[] {
                 aNewCityRandomizer(),
@@ -83,8 +77,8 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
         };
     }
 
-    @Test
-    @UseDataProvider("generateRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateRandomizers")
     public void generatedNumberShouldNotBeNull(Randomizer<?> randomizer) {
         // when
         Object randomNumber = randomizer.getRandomValue();
@@ -92,7 +86,6 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
         then(randomNumber).isNotNull();
     }
 
-    @DataProvider
     public static Object[][] generateSeededRandomizersAndTheirExpectedValues() {
         return new Object[][] {
                 { aNewCityRandomizer(SEED), "Candacemouth" },
@@ -102,7 +95,7 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
                 { aNewEmailRandomizer(SEED), "jayne.weissnat@hotmail.com" }, 
                 { aNewFirstNameRandomizer(SEED), "Jayne" },
                 { aNewFullNameRandomizer(SEED), "Candace Crona" },
-                { aNewIsbnRandomizer(SEED), "9781797745008" },
+                { aNewIsbnRandomizer(SEED), "9781797845005" },
                 { aNewLastNameRandomizer(SEED), "Hyatt" },
                 { aNewLatitudeRandomizer(SEED), "40" + new DecimalFormatSymbols().getDecimalSeparator() + "171357" },
                 { aNewLongitudeRandomizer(SEED), "80" + new DecimalFormatSymbols().getDecimalSeparator() + "342713" },
@@ -117,8 +110,8 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
         };
     }
 
-    @Test
-    @UseDataProvider("generateSeededRandomizersAndTheirExpectedValues")
+    @ParameterizedTest
+    @MethodSource("generateSeededRandomizersAndTheirExpectedValues")
     public void shouldGenerateTheSameValueForTheSameSeed(Randomizer<?> randomizer, Object expected) {
         //when
         Object actual = randomizer.getRandomValue();
@@ -126,7 +119,6 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
         then(actual).isEqualTo(expected);
     }
 
-    @DataProvider
     public static Object[][] generateSeededRandomizersWithLocaleAndTheirExpectedValues() {
         return new Object[][] {
                 { aNewCityRandomizer(SEED, LOCALE), "Versailles" },
@@ -136,7 +128,7 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
                 { aNewEmailRandomizer(SEED, LOCALE), "alice.masson@hotmail.fr" }, 
                 { aNewFirstNameRandomizer(SEED, LOCALE), "Alice" },
                 { aNewFullNameRandomizer(SEED, LOCALE), "Masson Emilie" },
-                { aNewIsbnRandomizer(SEED, LOCALE), "9781797745008" },
+                { aNewIsbnRandomizer(SEED, LOCALE), "9781797845005" },
                 { aNewLastNameRandomizer(SEED, LOCALE), "Faure" },
                 { aNewLatitudeRandomizer(SEED, LOCALE), "40" + new DecimalFormatSymbols().getDecimalSeparator() + "171357" }, // should really be "40.171357", seems like a bug in java-faker
                 { aNewLongitudeRandomizer(SEED, LOCALE), "80" + new DecimalFormatSymbols().getDecimalSeparator() + "342713" }, // should really be "80.342713", seems like a bug in java-faker
@@ -150,8 +142,8 @@ public class RandomizersTest extends AbstractRandomizerTest<FakerBasedRandomizer
         };
     }
 
-    @Test
-    @UseDataProvider("generateSeededRandomizersWithLocaleAndTheirExpectedValues")
+    @ParameterizedTest
+    @MethodSource("generateSeededRandomizersWithLocaleAndTheirExpectedValues")
     public void shouldGenerateTheSameValueForTheSameSeedForSameLocale(Randomizer<?> randomizer, Object expected) {
         //when
         Object actual = randomizer.getRandomValue();

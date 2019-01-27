@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ public class LocalDateRangeRandomizer extends AbstractRangeRandomizer<LocalDate>
     public LocalDate getRandomValue() {
         long minEpochDay = min.getLong(ChronoField.EPOCH_DAY);
         long maxEpochDay = max.getLong(ChronoField.EPOCH_DAY);
-        long randomEpochDay = nextLong(minEpochDay, maxEpochDay);
+        long randomEpochDay = (long) nextDouble(minEpochDay, maxEpochDay);
         return LocalDate.ofEpochDay(randomEpochDay);
     }
 

@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -35,21 +35,15 @@ import static org.mockito.Mockito.when;
 import java.util.Collection;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import io.github.benas.randombeans.api.Randomizer;
 
-@RunWith(DataProviderRunner.class)
 public class CollectionRandomizersTest {
 
     private static final int collectionSize = 3;
 
-    @DataProvider
     public static Object[] generateCollectionRandomizers() {
         Randomizer<String> elementRandomizer = elementRandomizer();
         return new Object[] {
@@ -58,8 +52,8 @@ public class CollectionRandomizersTest {
                 aNewSetRandomizer(elementRandomizer) };
     }
 
-    @Test
-    @UseDataProvider("generateCollectionRandomizers")
+    @ParameterizedTest
+    @MethodSource("generateCollectionRandomizers")
     public <T> void generatedCollectionShouldNotBeNull(Randomizer<Collection<T>> collectionRandomizer) {
         // when
         Collection<T> randomCollection = collectionRandomizer.getRandomValue();
@@ -67,7 +61,6 @@ public class CollectionRandomizersTest {
         then(randomCollection).isNotNull();
     }
 
-    @DataProvider
     public static Object[] generateCollectionRandomizersWithSpecificSize() {
         return new Object[] {
                 aNewListRandomizer(elementRandomizer(), collectionSize),
@@ -75,8 +68,8 @@ public class CollectionRandomizersTest {
                 aNewSetRandomizer(elementRandomizer(), collectionSize) };
     }
 
-    @Test
-    @UseDataProvider("generateCollectionRandomizersWithSpecificSize")
+    @ParameterizedTest
+    @MethodSource("generateCollectionRandomizersWithSpecificSize")
     public <T> void generatedCollectionSizeShouldBeEqualToTheSpecifiedSize(Randomizer<Collection<T>> collectionRandomizer) {
         // when
         Collection<T> randomCollection = collectionRandomizer.getRandomValue();
@@ -84,7 +77,6 @@ public class CollectionRandomizersTest {
         then(randomCollection).hasSize(collectionSize);
     }
 
-    @DataProvider
     public static Object[] generateCollectionRandomizersForEmptyCollections() {
         return new Object[] {
                 aNewListRandomizer(elementRandomizer(), 0),
@@ -92,8 +84,8 @@ public class CollectionRandomizersTest {
                 aNewSetRandomizer(elementRandomizer(), 0) };
     }
 
-    @Test
-    @UseDataProvider("generateCollectionRandomizersForEmptyCollections")
+    @ParameterizedTest
+    @MethodSource("generateCollectionRandomizersForEmptyCollections")
     public <T> void shouldAllowGeneratingEmptyCollections(Randomizer<Collection<T>> collectionRandomizer) {
         // when
         Collection<T> randomCollection = collectionRandomizer.getRandomValue();
@@ -101,7 +93,6 @@ public class CollectionRandomizersTest {
         then(randomCollection).isEmpty();
     }
 
-    @DataProvider
     public static Object[] generateCollectionRandomizersWithIllegalSize() {
         Randomizer<String> elementRandomizer = elementRandomizer();
         int illegalSize = -1;
@@ -111,8 +102,8 @@ public class CollectionRandomizersTest {
                 (ThrowingCallable) () -> aNewSetRandomizer(elementRandomizer, illegalSize) };
     }
 
-    @Test
-    @UseDataProvider("generateCollectionRandomizersWithIllegalSize")
+    @ParameterizedTest
+    @MethodSource("generateCollectionRandomizersWithIllegalSize")
     public void specifiedSizeShouldBePositive(ThrowingCallable callable) {
         // when
         Throwable expectedException = catchThrowable(callable);

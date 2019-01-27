@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import io.github.benas.randombeans.api.Randomizer;
 import io.github.benas.randombeans.api.RandomizerRegistry;
 import io.github.benas.randombeans.randomizers.misc.BooleanRandomizer;
 import io.github.benas.randombeans.randomizers.misc.LocaleRandomizer;
+import io.github.benas.randombeans.randomizers.misc.SkipRandomizer;
 import io.github.benas.randombeans.randomizers.misc.UUIDRandomizer;
 import io.github.benas.randombeans.randomizers.net.UriRandomizer;
 import io.github.benas.randombeans.randomizers.net.UrlRandomizer;
@@ -103,6 +104,8 @@ public class InternalRandomizerRegistry implements RandomizerRegistry {
         randomizers.put(URI.class, new UriRandomizer(seed));
         randomizers.put(Locale.class, new LocaleRandomizer(seed));
         randomizers.put(UUID.class, new UUIDRandomizer(seed));
+        // issue #280: skip fields of type Class
+        randomizers.put(Class.class, new SkipRandomizer());
     }
 
     @Override

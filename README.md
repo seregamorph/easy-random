@@ -10,10 +10,11 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage Status](https://coveralls.io/repos/benas/random-beans/badge.svg?branch=master&service=github)](https://coveralls.io/github/benas/random-beans?branch=master)
 [![Build Status](https://travis-ci.org/benas/random-beans.svg?branch=master)](https://travis-ci.org/benas/random-beans)
-[![Dependency Status](https://www.versioneye.com/user/projects/56c6d7fa19f173000c237adc/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56c6d7fa19f173000c237adc)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/random-beans/badge.svg?style=flat)](http://repo1.maven.org/maven2/io/github/benas/random-beans/3.6.0/)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/io.github.benas/random-beans/badge.svg)](http://www.javadoc.io/doc/io.github.benas/random-beans)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/random-beans/badge.svg?style=flat)](http://repo1.maven.org/maven2/io/github/benas/random-beans/3.7.0/)
+[![Javadocs](http://www.javadoc.io/badge/io.github.benas/random-beans.svg)](http://www.javadoc.io/doc/io.github.benas/random-beans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/benas/random-beans)
+[![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/benas/random-beans.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/benas/random-beans/context:java)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/benas/random-beans.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/benas/random-beans/alerts)
 
 </div>
 
@@ -21,6 +22,7 @@
 
 ## Latest news
 
+* 19/06/2017: Version 3.7.0 is released. Checkout what's new in the [change log](https://github.com/benas/random-beans/releases).
 * 05/03/2017: Version 3.6.0 is out with new features and bug fixes. See all details in the [change log](https://github.com/benas/random-beans/releases).
 
 # What is Random Beans ?
@@ -166,6 +168,10 @@ public void testPersistPerson() throws Exception {
 
 There are many other uses cases where random beans can be useful, you can find a non exhaustive list in the [wiki](https://github.com/benas/random-beans/wiki/use-cases).
 
+## Extensions
+
+* [JUnit extension](https://glytching.github.io/junit-extensions/randomBeans): Use random beans to generate random data in JUnit tests (courtesy of [glytching](https://github.com/glytching))
+
 ## Contribution
 
 You are welcome to contribute to the project with pull requests on GitHub.
@@ -185,21 +191,22 @@ If you have any question, suggestion, or feedback, do not hesitate to use the [G
 
 * [Adriano Machado](https://github.com/ammachado)
 * [Alberto Lagna](https://github.com/alagna)
+* [Andrew Neal](https://github.com/aeneal)
 * [Dovid Kopel](https://github.com/dovidkopel)
-* [de-x](https://github.com/huningd)
 * [Eric Taix](https://github.com/eric-taix)
 * [euZebe](https://github.com/euzebe)
 * [Fred Eckertson](https://github.com/feckertson)
+* [huningd](https://github.com/huningd)
 * [Jose Manuel Prieto](https://github.com/prietopa)
 * [kermit-the-frog](https://github.com/kermit-the-frog)
 * [Lucas Andersson](https://github.com/LucasAndersson)
 * [Nikola Milivojevic](https://github.com/dziga)
 * [Oleksandr Shcherbyna](https://github.com/sansherbina)
 * [Petromir Dzhunev](https://github.com/petromir)
-* [Ryan Dunckel](https://github.com/sparty02)
 * [Rebecca McQuary](https://github.com/rmcquary)
 * [Rémi Alvergnat](http://www.pragmasphere.com)
 * [Rodrigue Alcazar](https://github.com/rodriguealcazar)
+* [Ryan Dunckel](https://github.com/sparty02)
 * [Sam Van Overmeire](https://github.com/VanOvermeire)
 * [Valters Vingolds](https://github.com/valters)
 * [Vincent Potucek](https://github.com/punkratz312)

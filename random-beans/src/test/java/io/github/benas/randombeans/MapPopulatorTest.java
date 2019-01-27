@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- *   Copyright (c) 2017, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *   Copyright (c) 2019, Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,34 @@
  */
 package io.github.benas.randombeans;
 
-import io.github.benas.randombeans.api.EnhancedRandom;
-import io.github.benas.randombeans.beans.*;
-import lombok.Data;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.lang.reflect.Field;
-import java.util.*;
-
 import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import io.github.benas.randombeans.api.EnhancedRandom;
+import io.github.benas.randombeans.beans.CompositeMapBean;
+import io.github.benas.randombeans.beans.CustomMap;
+import io.github.benas.randombeans.beans.EnumMapBean;
+import io.github.benas.randombeans.beans.MapBean;
+import io.github.benas.randombeans.beans.Person;
+import io.github.benas.randombeans.beans.WildCardMapBean;
+import lombok.Data;
+
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class MapPopulatorTest {
 
@@ -55,7 +65,7 @@ public class MapPopulatorTest {
 
     private MapPopulator mapPopulator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ObjectFactory objectFactory = new ObjectFactory();
         mapPopulator = new MapPopulator(enhancedRandom, objectFactory);
