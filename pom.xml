@@ -10,7 +10,7 @@
 
     <groupId>io.github.benas</groupId>
     <artifactId>random-beans-parent</artifactId>
-    <version>3.8.1-SNAPSHOT</version>
+    <version>3.9.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Random Beans</name>
@@ -21,8 +21,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <lombok.version>1.18.4</lombok.version>
-        <junit.version>5.3.2</junit.version>
-        <faker.version>0.16</faker.version>
+        <junit.version>5.4.0</junit.version>
+        <faker.version>0.17.2</faker.version>
         <assertj.version>3.11.1</assertj.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <joda-time.version>2.10.1</joda-time.version>
@@ -178,6 +178,10 @@
             <name>Vincent Potucek</name>
             <url>https://github.com/punkratz312</url>
         </contributor>
+        <contributor>
+            <name>Weronika Redlarska</name>
+            <url>https://github.com/weronika-redlarska</url>
+        </contributor>
     </contributors>
 
     <dependencyManagement>
@@ -245,11 +249,9 @@
                 <version>${faker.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>

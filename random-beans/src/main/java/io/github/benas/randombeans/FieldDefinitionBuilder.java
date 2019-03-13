@@ -32,7 +32,10 @@ import java.util.Set;
  * Builder for {@link FieldDefinition}.
  *
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated Use {@link FieldPredicates} instead to build specify fields.
  */
+@Deprecated
 public class FieldDefinitionBuilder {
 
     private String name;
@@ -56,6 +59,7 @@ public class FieldDefinitionBuilder {
 
     /**
      * Specify the field name.
+     * The {@code name} can be a regular expression according to {@link java.util.regex.Pattern#compile(String)}.
      *
      * @param name the field name
      * @return the configured {@link FieldDefinitionBuilder}

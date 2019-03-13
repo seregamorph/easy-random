@@ -24,6 +24,8 @@
 package io.github.benas.randombeans.randomizers.registry;
 
 import io.github.benas.randombeans.FieldDefinition;
+import io.github.benas.randombeans.FieldPredicates;
+import io.github.benas.randombeans.TypePredicates;
 import io.github.benas.randombeans.annotation.Exclude;
 import io.github.benas.randombeans.annotation.Priority;
 import io.github.benas.randombeans.api.EnhancedRandomParameters;
@@ -34,8 +36,9 @@ import io.github.benas.randombeans.randomizers.misc.SkipRandomizer;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
-import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
+import static io.github.benas.randombeans.FieldPredicates.*;
 
 /**
  * A {@link RandomizerRegistry} to exclude fields using a {@link FieldDefinition}.
@@ -43,16 +46,18 @@ import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
  */
 @Priority(0)
-public class ExclusionRandomizerRegistry extends AbstractRandomizerRegistry implements RandomizerRegistry {
+public class ExclusionRandomizerRegistry implements RandomizerRegistry {
 
-    private Set<FieldDefinition<?, ?>> fieldDefinitions = new HashSet<>();
+    private Set<Predicate<Field>> fieldPredicates = new HashSet<>();
+    private Set<Predicate<Class<?>>> typePredicates = new HashSet<>();
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void init(EnhancedRandomParameters parameters) {
-        fieldDefinitions.add(field().isAnnotatedWith(Exclude.class).get());
+        fieldPredicates.add(FieldPredicates.isAnnotatedWith(Exclude.class));
+        typePredicates.add(TypePredicates.isAnnotatedWith(Exclude.class));
     }
 
     /**
@@ -60,12 +65,8 @@ public class ExclusionRandomizerRegistry extends AbstractRandomizerRegistry impl
      */
     @Override
     public Randomizer<?> getRandomizer(Field field) {
-        for (FieldDefinition<?, ?> fieldDefinition : fieldDefinitions) {
-            if (hasName(field, fieldDefinition.getName()) &&
-                    isDeclaredInClass(field, fieldDefinition.getClazz()) &&
-                    hasType(field, fieldDefinition.getType()) &&
-                    isAnnotatedWithOneOf(field, fieldDefinition.getAnnotations()) &&
-                    hasAllModifiers(field, fieldDefinition.getModifiers())) {
+        for (Predicate<Field> fieldPredicate : fieldPredicates) {
+            if (fieldPredicate.test(field)) {
                 return new SkipRandomizer();
             }
         }
@@ -77,6 +78,11 @@ public class ExclusionRandomizerRegistry extends AbstractRandomizerRegistry impl
      */
     @Override
     public Randomizer<?> getRandomizer(Class<?> clazz) {
+        for (Predicate<Class<?>> typePredicate : typePredicates) {
+            if (typePredicate.test(clazz)) {
+                return new SkipRandomizer();
+            }
+        }
         return null;
     }
 
@@ -85,8 +91,38 @@ public class ExclusionRandomizerRegistry extends AbstractRandomizerRegistry impl
      *
      * @param fieldDefinition to add
      */
+    @Deprecated
     public void addFieldDefinition(final FieldDefinition<?, ?> fieldDefinition) {
-        fieldDefinitions.add(fieldDefinition);
+        fieldPredicates.add(toPredicate(fieldDefinition));
+    }
+
+    /**
+     * Add a field predicate.
+     *
+     * @param predicate to add
+     */
+    public void addFieldPredicate(Predicate<Field> predicate) {
+        fieldPredicates.add(predicate);
+    }
+
+    /**
+     * Add a type predicate.
+     *
+     * @param predicate to add
+     */
+    public void addTypePredicate(Predicate<Class<?>> predicate) {
+        typePredicates.add(predicate);
+    }
+
+    // only for backward compatibility of FieldDefinition
+    private Predicate<Field> toPredicate(final FieldDefinition<?, ?> fieldDefinition) {
+        Class[] annotations = new Class[fieldDefinition.getAnnotations().size()];
+        return field -> named(fieldDefinition.getName())
+                .and(ofType(fieldDefinition.getType()))
+                .and(inClass(fieldDefinition.getClazz()))
+                .and(hasModifiers(fieldDefinition.getModifiers()))
+                .and(isAnnotatedWith(fieldDefinition.getAnnotations().toArray(annotations)))
+                .test(field);
     }
 
 }

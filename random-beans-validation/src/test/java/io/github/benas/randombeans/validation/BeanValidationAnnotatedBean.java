@@ -25,6 +25,7 @@ package io.github.benas.randombeans.validation;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 class BeanValidationAnnotatedBean {
@@ -48,8 +49,20 @@ class BeanValidationAnnotatedBean {
     @Future
     private Date eventDate;
 
+    @Future
+    private LocalDateTime eventLocalDateTime;
+
+    @FutureOrPresent
+    private Date futureOrPresent;
+
     @Past
     private Date birthday;
+
+    @Past
+    private LocalDateTime birthdayLocalDateTime;
+
+    @PastOrPresent
+    private Date pastOrPresent;
 
     @Max(10)
     private int maxQuantity;
@@ -130,12 +143,28 @@ class BeanValidationAnnotatedBean {
         this.eventDate = eventDate;
     }
 
+    public LocalDateTime getEventLocalDateTime() {
+        return eventLocalDateTime;
+    }
+
+    public Date getFutureOrPresent() {
+        return futureOrPresent;
+    }
+
     public Date getBirthday() {
         return birthday;
     }
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public LocalDateTime getBirthdayLocalDateTime() {
+        return birthdayLocalDateTime;
+    }
+
+    public Date getPastOrPresent() {
+        return pastOrPresent;
     }
 
     public int getMaxQuantity() {
@@ -243,6 +272,22 @@ class BeanValidationAnnotatedBean {
         this.discount = discount;
     }
 
+    public void setEventLocalDateTime(LocalDateTime eventLocalDateTime) {
+        this.eventLocalDateTime = eventLocalDateTime;
+    }
+
+    public void setFutureOrPresent(Date futureOrPresent) {
+        this.futureOrPresent = futureOrPresent;
+    }
+
+    public void setBirthdayLocalDateTime(LocalDateTime birthdayLocalDateTime) {
+        this.birthdayLocalDateTime = birthdayLocalDateTime;
+    }
+
+    public void setPastOrPresent(Date pastOrPresent) {
+        this.pastOrPresent = pastOrPresent;
+    }
+
     @Override
     public String toString() {
         return "BeanValidationAnnotatedBean{" +
@@ -252,7 +297,11 @@ class BeanValidationAnnotatedBean {
                 ", minDiscount=" + minDiscount +
                 ", discount=" + discount +
                 ", eventDate=" + eventDate +
+                ", eventLocalDateTime=" + eventLocalDateTime +
                 ", birthday=" + birthday +
+                ", birthdayLocalDateTime=" + birthdayLocalDateTime +
+                ", pastOrPresent=" + pastOrPresent +
+                ", futureOrPresent=" + futureOrPresent +
                 ", maxQuantity=" + maxQuantity +
                 ", minQuantity=" + minQuantity +
                 ", positive=" + positive +

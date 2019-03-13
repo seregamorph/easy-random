@@ -35,8 +35,11 @@ import java.util.Set;
  * @param <T> The declaring class type
  * @param <F> The field type
  * @author Mahmoud Ben Hassine (mahmoud.benhassine@icloud.com)
+ *
+ * @deprecated use {@link FieldPredicates} instead to define a field.
  */
 @Value
+@Deprecated
 public class FieldDefinition<T, F> {
 
     private final String name;
@@ -52,7 +55,7 @@ public class FieldDefinition<T, F> {
     /**
      * Create a new {@link FieldDefinition}.
      *
-     * @param name  the field name
+     * @param name  the field name (or regex to match a field name)
      * @param type  the filed type
      * @param clazz the declaring class type
      */
@@ -63,7 +66,7 @@ public class FieldDefinition<T, F> {
     /**
      * Create a new {@link FieldDefinition}.
      *
-     * @param name  the field name
+     * @param name  the field name (or regex to match a field name)
      * @param type  the filed type
      * @param clazz the declaring class type
      * @param annotations annotations present on the field
@@ -75,7 +78,7 @@ public class FieldDefinition<T, F> {
     /**
      * Create a new {@link FieldDefinition}.
      *
-     * @param name  the field name
+     * @param name  the field name (or regex to match a field name)
      * @param type  the filed type
      * @param clazz the declaring class type
      * @param annotations annotations present on the field

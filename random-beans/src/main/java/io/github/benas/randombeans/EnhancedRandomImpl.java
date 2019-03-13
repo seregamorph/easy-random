@@ -70,11 +70,12 @@ class EnhancedRandomImpl extends EnhancedRandom {
         enumRandomizersByType = new ConcurrentHashMap<>();
         fieldPopulator = new FieldPopulator(this, randomizerProvider, arrayPopulator, collectionPopulator, mapPopulator);
         fieldExclusionChecker = new FieldExclusionChecker();
+        parameters = new EnhancedRandomParameters();
     }
 
     @Override
     public <T> T nextObject(final Class<T> type, final String... excludedFields) {
-        return doPopulateBean(type, new RandomizationContext(parameters, excludedFields));
+        return doPopulateBean(type, new RandomizationContext(type, parameters, excludedFields));
     }
 
     @Override
@@ -87,11 +88,14 @@ class EnhancedRandomImpl extends EnhancedRandom {
     }
 
     <T> T doPopulateBean(final Class<T> type, final RandomizationContext context) {
-        T result;
+        T result = null;
         try {
 
             Randomizer<?> randomizer = randomizerProvider.getRandomizerByType(type);
             if (randomizer != null) {
+                if (randomizer instanceof ContextAwareRandomizer) {
+                    ((ContextAwareRandomizer<?>) randomizer).setRandomizerContext(context);
+                }
                 return (T) randomizer.getRandomValue();
             }
 
@@ -107,6 +111,7 @@ class EnhancedRandomImpl extends EnhancedRandom {
 
             // create a new instance of the target type
             result = objectFactory.createInstance(type);
+            context.setRandomizedObject(result);
 
             // cache instance in the population context
             context.addPopulatedBean(type, result);
@@ -120,8 +125,12 @@ class EnhancedRandomImpl extends EnhancedRandom {
             populateFields(fields, result, context);
 
             return result;
-        } catch (InstantiationError | Exception e) {
-            throw new ObjectGenerationException("Unable to generate a random instance of type " + type, e);
+        } catch (Throwable e) {
+            if (parameters.isIgnoreRandomizationErrors()) {
+                return null;
+            } else {
+                throw new ObjectGenerationException("Unable to generate a random instance of type " + type, e);
+            }
         }
     }
 

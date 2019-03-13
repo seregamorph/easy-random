@@ -28,6 +28,8 @@ import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRand
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -65,7 +67,15 @@ public class BeanValidationTest {
 
         assertThat(bean.getBirthday()).isInThePast();// @Past Date birthday;
 
+        assertThat(bean.getBirthdayLocalDateTime()).isBefore(LocalDateTime.now());// @Past LocalDateTime birthdayLocalDateTime;
+
+        assertThat(bean.getPastOrPresent()).isBeforeOrEqualsTo(new Date());// @PastOrPresent Date pastOrPresent;
+
         assertThat(bean.getEventDate()).isInTheFuture();// @Future Date eventDate;
+
+        assertThat(bean.getEventLocalDateTime()).isAfter(LocalDateTime.now());// @Future LocalDateTime eventLocalDateTime;
+
+        assertThat(bean.getFutureOrPresent()).isAfterOrEqualsTo(new Date());// @FutureOrPresent Date eventDate;
 
         assertThat(bean.getPositive()).isGreaterThan(0);// @Positive int positive;
 
@@ -113,7 +123,15 @@ public class BeanValidationTest {
 
         assertThat(bean.getBirthday()).isInThePast();// @Past Date birthday;
 
+        assertThat(bean.getBirthdayLocalDateTime()).isBefore(LocalDateTime.now());// @Past LocalDateTime birthdayLocalDateTime;
+
+        assertThat(bean.getPastOrPresent()).isBeforeOrEqualsTo(new Date());// @PastOrPresent Date pastOrPresent;
+
         assertThat(bean.getEventDate()).isInTheFuture();// @Future Date eventDate;
+
+        assertThat(bean.getEventLocalDateTime()).isAfter(LocalDateTime.now());// @Future LocalDateTime eventLocalDateTime;
+
+        assertThat(bean.getFutureOrPresent()).isAfterOrEqualsTo(new Date());// @FutureOrPresent Date eventDate;
 
         assertThat(bean.getPositive()).isGreaterThan(0);// @Positive int positive;
 
@@ -160,9 +178,9 @@ public class BeanValidationTest {
 
         assertThat(bean.getUsername()).isEqualTo("eOMtThyhVNLWUZNRcBaQKxI");
         // uses DateRange with now as end, so test is not repeatable
-        // assertThat(bean.getBirthday()).isEqualTo("2007-07-22T13:20:35.628");
+        // assertThat(bean.getBirthday()).isEqualTo("2007-07-22T13:20:35.628"); // same for birthdayLocalDateTime
         // uses DateRange with now as start, so test is not repeatable
-        // assertThat(bean.getEventDate()).isEqualTo("2017-07-22T13:20:35.628");
+        // assertThat(bean.getEventDate()).isEqualTo("2017-07-22T13:20:35.628"); // same for eventLocalDateTime
         assertThat(bean.getMaxQuantity()).isEqualTo(-2055951745);
         assertThat(bean.getMinQuantity()).isEqualTo(91531906);
         assertThat(bean.getMaxDiscount()).isEqualTo(new BigDecimal(1.2786858993971550457757757612853311002254486083984375));
@@ -175,7 +193,7 @@ public class BeanValidationTest {
         assertThat(bean.getPositiveOrZero()).isEqualTo(91531901);
         assertThat(bean.getNegative()).isEqualTo(-2055951746);
         assertThat(bean.getNegativeOrZero()).isEqualTo(-2055951746);
-        assertThat(bean.getEmail()).isEqualTo("jeffery.wuckert@yahoo.com");
+        assertThat(bean.getEmail()).isEqualTo("celine.schoen@hotmail.com");
         assertThat(bean.getNotBlank()).isEqualTo("tg");
     }
 

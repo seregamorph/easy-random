@@ -10,7 +10,7 @@
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Coverage Status](https://coveralls.io/repos/benas/random-beans/badge.svg?branch=master&service=github)](https://coveralls.io/github/benas/random-beans?branch=master)
 [![Build Status](https://travis-ci.org/benas/random-beans.svg?branch=master)](https://travis-ci.org/benas/random-beans)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/random-beans/badge.svg?style=flat)](http://repo1.maven.org/maven2/io/github/benas/random-beans/3.7.0/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.benas/random-beans/badge.svg?style=flat)](http://repo1.maven.org/maven2/io/github/benas/random-beans/3.9.0/)
 [![Javadocs](http://www.javadoc.io/badge/io.github.benas/random-beans.svg)](http://www.javadoc.io/doc/io.github.benas/random-beans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/benas/random-beans)
 [![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/benas/random-beans.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/benas/random-beans/context:java)
@@ -22,8 +22,8 @@
 
 ## Latest news
 
-* 19/06/2017: Version 3.7.0 is released. Checkout what's new in the [change log](https://github.com/benas/random-beans/releases).
-* 05/03/2017: Version 3.6.0 is out with new features and bug fixes. See all details in the [change log](https://github.com/benas/random-beans/releases).
+* 13/03/2019: Version 3.9.0 is out! Checkout what's new in the [change log](https://github.com/benas/random-beans/releases).
+* 27/01/2019: Version 3.8.0 is finally out! Checkout what's new in the [change log](https://github.com/benas/random-beans/releases).
 
 # What is Random Beans ?
 
@@ -70,6 +70,7 @@ EnhancedRandom random = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
    .collectionSizeRange(1, 10)
    .scanClasspathForConcreteTypes(true)
    .overrideDefaultInitialization(false)
+   .ignoreRandomizationErrors(true)
    .build();
 ```
 
@@ -210,5 +211,6 @@ If you have any question, suggestion, or feedback, do not hesitate to use the [G
 * [Sam Van Overmeire](https://github.com/VanOvermeire)
 * [Valters Vingolds](https://github.com/valters)
 * [Vincent Potucek](https://github.com/punkratz312)
+* [Weronika Redlarska](https://github.com/weronika-redlarska)
 
 Thank you all for your contributions!

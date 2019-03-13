@@ -24,13 +24,14 @@
 package io.github.benas.randombeans;
 
 import static io.github.benas.randombeans.EnhancedRandomBuilder.aNewEnhancedRandomBuilder;
-import static io.github.benas.randombeans.FieldDefinitionBuilder.field;
+import static io.github.benas.randombeans.FieldPredicates.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import java.util.function.Supplier;
 
+import io.github.benas.randombeans.util.ReflectionUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -49,8 +50,6 @@ public class EnhancedRandomBuilderTest {
 
     @Mock
     private Randomizer<String> randomizer;
-    @Mock
-    private Supplier<String> supplier;
     @Mock
     private Randomizer humanRandomizer;
     @Mock
@@ -76,8 +75,7 @@ public class EnhancedRandomBuilderTest {
 
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
-        FieldDefinition<?, ?> fieldDefinition = field().named("name").ofType(String.class).inClass(Human.class).get();
-        enhancedRandomBuilder.randomize(fieldDefinition, randomizer);
+        enhancedRandomBuilder.randomize(named("name").and(ofType(String.class)).and(inClass(Human.class)), randomizer);
 
         EnhancedRandom enhancedRandom = enhancedRandomBuilder.build();
         Human human = enhancedRandom.nextObject(Human.class);
@@ -92,12 +90,10 @@ public class EnhancedRandomBuilderTest {
 
     @Test
     public void customSupplierShouldBeRegisteredInAllBuiltInstances() {
-        when(supplier.get()).thenReturn(NAME);
-
+        Supplier<String> supplier =() -> NAME;
         enhancedRandomBuilder = aNewEnhancedRandomBuilder();
 
-        FieldDefinition<?, ?> fieldDefinition = field().named("name").ofType(String.class).inClass(Human.class).get();
-        enhancedRandomBuilder.randomize(fieldDefinition, supplier);
+        enhancedRandomBuilder.randomize(named("name").and(ofType(String.class)).and(inClass(Human.class)), ReflectionUtils.asRandomizer(supplier));
 
         EnhancedRandom enhancedRandom = enhancedRandomBuilder.build();
         Human human = enhancedRandom.nextObject(Human.class);
@@ -114,7 +110,7 @@ public class EnhancedRandomBuilderTest {
     public void customRandomizerRegistryShouldBeRegisteredInAllBuiltInstances() {
         when(humanRandomizer.getRandomValue()).thenReturn(human);
         when(randomizerRegistry.getRandomizer(Human.class)).thenReturn(humanRandomizer);
-        enhancedRandomBuilder = aNewEnhancedRandomBuilder().registerRandomizerRegistry(randomizerRegistry);
+        enhancedRandomBuilder = aNewEnhancedRandomBuilder().randomizerRegistry(randomizerRegistry);
 
         EnhancedRandom enhancedRandom = enhancedRandomBuilder.build();
         Human actual = enhancedRandom.nextObject(Human.class);
