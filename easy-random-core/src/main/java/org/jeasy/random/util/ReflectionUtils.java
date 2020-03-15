@@ -37,6 +37,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
@@ -630,7 +631,7 @@ public final class ReflectionUtils {
         if(Double.class.equals(targetType) || Double.TYPE.equals(targetType)) return Double.parseDouble(value);
         if(BigInteger.class.equals(targetType)) return new BigInteger(value);
         if(BigDecimal.class.equals(targetType)) return new BigDecimal(value);
-        if(Date.class.equals(targetType)) return DateUtils.parse(value);
+        if(Date.class.equals(targetType)) return Date.from(LocalDateTime.parse(value).toInstant(ZoneOffset.UTC));
         if(java.sql.Date.class.equals(targetType)) return java.sql.Date.valueOf(value);
         if(java.sql.Time.class.equals(targetType)) return java.sql.Time.valueOf(value);
         if(java.sql.Timestamp.class.equals(targetType)) return java.sql.Timestamp.valueOf(value);
