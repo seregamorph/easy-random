@@ -36,6 +36,7 @@ public class LocalTimeRandomizer implements Randomizer<LocalTime> {
 
     private final HourRandomizer hourRandomizer;
     private final MinuteRandomizer minuteRandomizer;
+    private final NanoSecondRandomizer nanoSecondRandomizer;
 
     /**
      * Create a new {@link LocalTimeRandomizer}.
@@ -43,6 +44,7 @@ public class LocalTimeRandomizer implements Randomizer<LocalTime> {
     public LocalTimeRandomizer() {
         hourRandomizer = new HourRandomizer();
         minuteRandomizer = new MinuteRandomizer();
+        nanoSecondRandomizer = new NanoSecondRandomizer();
     }
 
     /**
@@ -53,13 +55,16 @@ public class LocalTimeRandomizer implements Randomizer<LocalTime> {
     public LocalTimeRandomizer(final long seed) {
         hourRandomizer = new HourRandomizer(seed);
         minuteRandomizer = new MinuteRandomizer(seed);
+        nanoSecondRandomizer = new NanoSecondRandomizer(seed);
     }
 
     /**
      * Create a new {@link LocalTimeRandomizer}.
      *
      * @return a new {@link LocalTimeRandomizer}.
+     * @deprecated in favor of the equivalent constructor
      */
+    @Deprecated
     public static LocalTimeRandomizer aNewLocalTimeRandomizer() {
         return new LocalTimeRandomizer();
     }
@@ -69,7 +74,9 @@ public class LocalTimeRandomizer implements Randomizer<LocalTime> {
      *
      * @param seed initial seed
      * @return a new {@link LocalTimeRandomizer}.
+     * @deprecated in favor of the equivalent constructor
      */
+    @Deprecated
     public static LocalTimeRandomizer aNewLocalTimeRandomizer(final long seed) {
         return new LocalTimeRandomizer(seed);
     }
@@ -79,6 +86,7 @@ public class LocalTimeRandomizer implements Randomizer<LocalTime> {
         int randomHour = hourRandomizer.getRandomValue();
         int randomMinute = minuteRandomizer.getRandomValue();
         int randomSecond = minuteRandomizer.getRandomValue(); // seconds are also between 0 and 59
-        return LocalTime.of(randomHour, randomMinute, randomSecond);
+        int randomNanoSecond = nanoSecondRandomizer.getRandomValue();
+        return LocalTime.of(randomHour, randomMinute, randomSecond, randomNanoSecond);
     }
 }

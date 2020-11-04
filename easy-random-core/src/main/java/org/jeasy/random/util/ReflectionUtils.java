@@ -28,8 +28,6 @@ import org.jeasy.random.ObjectCreationException;
 import org.jeasy.random.api.Randomizer;
 import org.objenesis.ObjenesisStd;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
@@ -151,14 +149,14 @@ public final class ReflectionUtils {
      */
     public static void setProperty(final Object object, final Field field, final Object value) throws IllegalAccessException, InvocationTargetException {
         try {
-            PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
-            Method setter = propertyDescriptor.getWriteMethod();
-            if (setter != null) {
-                setter.invoke(object, value);
+            Optional<Method> setter = getWriteMethod(field);
+            if (setter.isPresent()) {
+                setter.get().invoke(object, value);
             } else {
                 setFieldValue(object, field, value);
             }
-        } catch (IntrospectionException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
+            // otherwise, set field using reflection
             setFieldValue(object, field, value);
         }
     }
@@ -370,6 +368,16 @@ public final class ReflectionUtils {
     }
 
     /**
+     * Check if a type is {@link Optional}.
+     *
+     * @param type the type to check
+     * @return true if the type is {@link Optional}, false otherwise.
+     */
+    public static boolean isOptionalType(final Class<?> type) {
+        return Optional.class.isAssignableFrom(type);
+    }
+
+    /**
      * Check if a type is a JDK built-in collection/map.
      *
      * @param type the type to check
@@ -547,6 +555,16 @@ public final class ReflectionUtils {
     }
 
     /**
+     * Get the write method for given field.
+     *
+     * @param field field to get the write method for
+     * @return Optional of write method or empty if field has no write method
+     */
+    public static Optional<Method> getWriteMethod(Field field) {
+        return getPublicMethod("set" + capitalize(field.getName()), field.getDeclaringClass(), field.getType());
+    }
+
+    /**
      * Get the read method for given field.
      * @param field field to get the read method for.
      * @return Optional of read method or empty if field has no read method
@@ -554,7 +572,7 @@ public final class ReflectionUtils {
     public static Optional<Method> getReadMethod(Field field) {
         String fieldName = field.getName();
         Class<?> fieldClass = field.getDeclaringClass();
-        String capitalizedFieldName = fieldName.substring(0, 1).toUpperCase(ENGLISH) + fieldName.substring(1);
+        String capitalizedFieldName = capitalize(fieldName);
         // try to find getProperty
         Optional<Method> getter = getPublicMethod("get" + capitalizedFieldName, fieldClass);
         if (getter.isPresent()) {
@@ -564,9 +582,13 @@ public final class ReflectionUtils {
         return getPublicMethod("is" + capitalizedFieldName, fieldClass);
     }
 
-    private static Optional<Method> getPublicMethod(String name, Class<?> target) {
+    private static String capitalize(String propertyName) {
+        return propertyName.substring(0, 1).toUpperCase(ENGLISH) + propertyName.substring(1);
+    }
+
+    private static Optional<Method> getPublicMethod(String name, Class<?> target, Class<?>... parameterTypes) {
         try {
-            return Optional.of(target.getMethod(name));
+            return Optional.of(target.getMethod(name, parameterTypes));
         } catch (NoSuchMethodException | SecurityException e) {
             return Optional.empty();
         }

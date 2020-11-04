@@ -23,14 +23,9 @@
  */
 package org.jeasy.random.randomizers.range;
 
-import org.jeasy.random.EasyRandomParameters;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.zone.ZoneRules;
 
 /**
  * Generate a random {@link LocalDateTime} in the given range.
@@ -42,8 +37,8 @@ public class LocalDateTimeRangeRandomizer extends AbstractRangeRandomizer<LocalD
     /**
      * Create a new {@link LocalDateTimeRangeRandomizer}.
      *
-     * @param min min value
-     * @param max max value
+     * @param min min value (inclusive)
+     * @param max max value (exclusive)
      */
     public LocalDateTimeRangeRandomizer(final LocalDateTime min, final LocalDateTime max) {
         super(min, max);
@@ -52,8 +47,8 @@ public class LocalDateTimeRangeRandomizer extends AbstractRangeRandomizer<LocalD
     /**
      * Create a new {@link LocalDateTimeRangeRandomizer}.
      *
-     * @param min  min value
-     * @param max  max value
+     * @param min  min value (inclusive)
+     * @param max  max value (exclusive)
      * @param seed initial seed
      */
     public LocalDateTimeRangeRandomizer(final LocalDateTime min, final LocalDateTime max, final long seed) {
@@ -63,10 +58,12 @@ public class LocalDateTimeRangeRandomizer extends AbstractRangeRandomizer<LocalD
     /**
      * Create a new {@link LocalDateTimeRangeRandomizer}.
      *
-     * @param min min value
-     * @param max max value
+     * @param min min value (inclusive)
+     * @param max max value (exclusive)
      * @return a new {@link LocalDateTimeRangeRandomizer}.
+     * @deprecated in favor of the equivalent constructor
      */
+    @Deprecated
     public static LocalDateTimeRangeRandomizer aNewLocalDateTimeRangeRandomizer(final LocalDateTime min, final LocalDateTime max) {
         return new LocalDateTimeRangeRandomizer(min, max);
     }
@@ -74,11 +71,13 @@ public class LocalDateTimeRangeRandomizer extends AbstractRangeRandomizer<LocalD
     /**
      * Create a new {@link LocalDateTimeRangeRandomizer}.
      *
-     * @param min  min value
-     * @param max  max value
+     * @param min  min value (inclusive)
+     * @param max  max value (exclusive)
      * @param seed initial seed
      * @return a new {@link LocalDateTimeRangeRandomizer}.
+     * @deprecated in favor of the equivalent constructor
      */
+    @Deprecated
     public static LocalDateTimeRangeRandomizer aNewLocalDateTimeRangeRandomizer(final LocalDateTime min, final LocalDateTime max, final long seed) {
         return new LocalDateTimeRangeRandomizer(min, max, seed);
     }

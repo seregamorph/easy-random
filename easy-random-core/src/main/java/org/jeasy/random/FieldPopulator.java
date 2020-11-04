@@ -23,6 +23,7 @@
  */
 package org.jeasy.random;
 
+import java.util.List;
 import org.jeasy.random.api.ContextAwareRandomizer;
 import org.jeasy.random.api.Randomizer;
 import org.jeasy.random.api.RandomizerProvider;
@@ -33,7 +34,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
-import static org.jeasy.random.util.CollectionUtils.randomElementOf;
 import static org.jeasy.random.util.ReflectionUtils.*;
 
 /**
@@ -58,15 +58,19 @@ class FieldPopulator {
 
     private final MapPopulator mapPopulator;
 
+    private final OptionalPopulator optionalPopulator;
+
     private final RandomizerProvider randomizerProvider;
 
     FieldPopulator(final EasyRandom easyRandom, final RandomizerProvider randomizerProvider,
-                   final ArrayPopulator arrayPopulator, final CollectionPopulator collectionPopulator, final MapPopulator mapPopulator) {
+                   final ArrayPopulator arrayPopulator, final CollectionPopulator collectionPopulator,
+                   final MapPopulator mapPopulator, OptionalPopulator optionalPopulator) {
         this.easyRandom = easyRandom;
         this.randomizerProvider = randomizerProvider;
         this.arrayPopulator = arrayPopulator;
         this.collectionPopulator = collectionPopulator;
         this.mapPopulator = mapPopulator;
+        this.optionalPopulator = optionalPopulator;
     }
 
     void populateField(final Object target, final GenericField field, final RandomizationContext context) throws IllegalAccessException {
@@ -74,10 +78,11 @@ class FieldPopulator {
         if (randomizer instanceof SkipRandomizer) {
             return;
         }
+        context.pushStackItem(new RandomizationContextStackItem(target, field));
         if (randomizer instanceof ContextAwareRandomizer) {
             ((ContextAwareRandomizer<?>) randomizer).setRandomizerContext(context);
         }
-        context.pushStackItem(new RandomizationContextStackItem(target, field.getField()));
+        //context.pushStackItem(new RandomizationContextStackItem(target, field.getField()));
         if(!context.hasExceededRandomizationDepth()) {
             Object value;
             if (randomizer != null) {
@@ -120,25 +125,26 @@ class FieldPopulator {
         Class<?> fieldType = field.getType();
         Type fieldGenericType = field.getField().getGenericType();
 
-        Object value;
         if (isArrayType(fieldType)) {
-            value = arrayPopulator.getRandomArray(fieldType, context);
+            return arrayPopulator.getRandomArray(fieldType, context);
         } else if (isCollectionType(fieldType)) {
-            value = collectionPopulator.getRandomCollection(field.getField(), context);
+            return collectionPopulator.getRandomCollection(field.getField(), context);
         } else if (isMapType(fieldType)) {
-            value = mapPopulator.getRandomMap(field.getField(), context);
+            return mapPopulator.getRandomMap(field.getField(), context);
+        } else if (isOptionalType(fieldType)) {
+            return optionalPopulator.getRandomOptional(field, context);
         } else {
             if (context.getParameters().isScanClasspathForConcreteTypes() && isAbstract(fieldType) && !isEnumType(fieldType) /*enums can be abstract, but can not inherit*/) {
-                Class<?> randomConcreteSubType = randomElementOf(filterSameParameterizedTypes(getPublicConcreteSubTypesOf(fieldType), fieldGenericType));
-                if (randomConcreteSubType == null) {
+                List<Class<?>> parameterizedTypes = filterSameParameterizedTypes(getPublicConcreteSubTypesOf(fieldType), fieldGenericType);
+                if (parameterizedTypes.isEmpty()) {
                     throw new ObjectCreationException("Unable to find a matching concrete subtype of type: " + fieldType);
                 } else {
-                    value = easyRandom.doPopulateBean(randomConcreteSubType, context);
+                    Class<?> randomConcreteSubType = parameterizedTypes.get(easyRandom.nextInt(parameterizedTypes.size()));
+                    return easyRandom.doPopulateBean(randomConcreteSubType, context);
                 }
             } else {
-                value = easyRandom.doPopulateBean(fieldType, context);
+                return easyRandom.doPopulateBean(fieldType, context);
             }
         }
-        return value;
     }
 }

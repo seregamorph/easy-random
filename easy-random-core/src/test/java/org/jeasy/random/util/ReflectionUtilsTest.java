@@ -41,6 +41,8 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 class ReflectionUtilsTest {
 
@@ -261,6 +263,34 @@ class ReflectionUtilsTest {
         assertThat(map).isInstanceOf(TreeMap.class).isEmpty();
     }
 
+    @Test
+    void setPropertyFluentBean() throws Exception {
+        // given
+        ChainedSetterBean chainedSetterBean = spy(ChainedSetterBean.class);
+        Field nameField = ChainedSetterBean.class.getDeclaredField("name");
+
+        // when
+        ReflectionUtils.setProperty(chainedSetterBean, nameField, "myName");
+
+        // then
+        verify(chainedSetterBean).setName("myName");
+        assertThat(chainedSetterBean.getName()).isEqualTo("myName");
+    }
+
+    @Test
+    void setPropertyFluentBeanPrimitiveType() throws Exception {
+        // given
+        ChainedSetterBean chainedSetterBean = spy(ChainedSetterBean.class);
+        Field indexField = ChainedSetterBean.class.getDeclaredField("index");
+
+        // when
+        ReflectionUtils.setProperty(chainedSetterBean, indexField, 100);
+
+        // then
+        verify(chainedSetterBean).setIndex(100);
+        assertThat(chainedSetterBean.getIndex()).isEqualTo(100);
+    }
+
     @SuppressWarnings("unused")
     private class PrimitiveFieldsWithDefaultValuesBean {
         public boolean bool;
@@ -325,4 +355,5 @@ class ReflectionUtilsTest {
     public @interface NotNull {
 
     }
+
 }
