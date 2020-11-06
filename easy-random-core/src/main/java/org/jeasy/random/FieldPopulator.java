@@ -78,11 +78,10 @@ class FieldPopulator {
         if (randomizer instanceof SkipRandomizer) {
             return;
         }
-        context.pushStackItem(new RandomizationContextStackItem(target, field));
+        context.pushStackItem(new RandomizationContextStackItem(target, field.getField()));
         if (randomizer instanceof ContextAwareRandomizer) {
             ((ContextAwareRandomizer<?>) randomizer).setRandomizerContext(context);
         }
-        //context.pushStackItem(new RandomizationContextStackItem(target, field.getField()));
         if(!context.hasExceededRandomizationDepth()) {
             Object value;
             if (randomizer != null) {
@@ -132,7 +131,7 @@ class FieldPopulator {
         } else if (isMapType(fieldType)) {
             return mapPopulator.getRandomMap(field.getField(), context);
         } else if (isOptionalType(fieldType)) {
-            return optionalPopulator.getRandomOptional(field, context);
+            return optionalPopulator.getRandomOptional(field.getField(), context);
         } else {
             if (context.getParameters().isScanClasspathForConcreteTypes() && isAbstract(fieldType) && !isEnumType(fieldType) /*enums can be abstract, but can not inherit*/) {
                 List<Class<?>> parameterizedTypes = filterSameParameterizedTypes(getPublicConcreteSubTypesOf(fieldType), fieldGenericType);

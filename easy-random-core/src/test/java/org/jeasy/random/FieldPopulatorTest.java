@@ -131,7 +131,7 @@ class FieldPopulatorTest {
         }).when(contextAwareRandomizer).setRandomizerContext(context);
 
         // When
-        fieldPopulator.populateField(human, name, context);
+        fieldPopulator.populateField(human, new GenericField(name), context);
 
         // Then
         assertThat(currentObjectFromContext[0]).isEqualTo(human);
