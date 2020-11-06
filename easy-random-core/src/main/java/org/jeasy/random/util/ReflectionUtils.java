@@ -23,6 +23,10 @@
  */
 package org.jeasy.random.util;
 
+import com.fasterxml.classmate.MemberResolver;
+import com.fasterxml.classmate.ResolvedType;
+import com.fasterxml.classmate.ResolvedTypeWithMembers;
+import com.fasterxml.classmate.TypeResolver;
 import org.jeasy.random.annotation.RandomizerArgument;
 import org.jeasy.random.ObjectCreationException;
 import org.jeasy.random.api.Randomizer;
@@ -42,7 +46,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
 import static java.util.stream.Collectors.toList;
@@ -95,6 +98,18 @@ public final class ReflectionUtils {
                 new RandomizerProxy(supplier));
     }
 
+    public static List<GenericField> getAllFields(Class<?> type) {
+        TypeResolver typeResolver = new TypeResolver();
+        MemberResolver memberResolver = new MemberResolver(typeResolver);
+
+        ResolvedType resolved = typeResolver.resolve(type);
+        ResolvedTypeWithMembers members = memberResolver.resolve(resolved, null, null);
+
+        return Stream.of(members.getMemberFields())
+                .map(resolvedField -> new GenericField(resolvedField.getRawMember(), resolvedField.getType().getErasedType()))
+                .collect(Collectors.toList());
+    }
+
     /**
      * Get declared fields of a given type.
      *
@@ -102,6 +117,7 @@ public final class ReflectionUtils {
      * @param <T>  the actual type to introspect
      * @return list of declared fields
      */
+    @Deprecated
     public static <T> List<GenericField> getDeclaredFields(T type) {
         return stream(type.getClass().getDeclaredFields())
                 .map(field -> new GenericField(field, field.getType()))
@@ -114,6 +130,7 @@ public final class ReflectionUtils {
      * @param type the type to introspect
      * @return list of inherited fields
      */
+    @Deprecated
     public static List<GenericField> getInheritedFields(Class<?> type) {
         List<GenericField> inheritedFields = new ArrayList<>();
         while (type.getSuperclass() != null) {

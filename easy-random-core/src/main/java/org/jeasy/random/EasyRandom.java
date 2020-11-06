@@ -152,9 +152,7 @@ public class EasyRandom extends Random {
             context.addPopulatedBean(type, result);
 
             // retrieve declared and inherited fields
-            List<GenericField> fields = getDeclaredFields(result);
-            // we can not use type here, because with classpath scanning enabled the result can be a subtype
-            fields.addAll(getInheritedFields(result.getClass()));
+            List<GenericField> fields = ReflectionUtils.getAllFields(result.getClass());
 
             // inner classes (and static nested classes) have a field named "this$0" that references the enclosing class.
             // This field should be excluded
