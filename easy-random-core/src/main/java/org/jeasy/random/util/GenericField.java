@@ -32,19 +32,19 @@ import java.util.Objects;
  * When using type variables, {@link Field#getType()} will return the lower bound class.
  * However, in case the generic field is part of a base class, the actual type is sometimes
  * known. This class wraps {@link Field} and contains the actual type as well.
- *
  */
 public class GenericField {
-    private final Field field;
-    private final Class<?> type;
 
-    public GenericField(Field field, Class<?> type) {
+    private final Field field;
+    private final ResolvableType resolvableType;
+
+    GenericField(Field field, ResolvableType resolvableType) {
         this.field = field;
-        this.type = type;
+        this.resolvableType = resolvableType;
     }
 
     public GenericField(Field field) {
-        this(field, field.getType());
+        this(field, ResolvableType.forField(field, field.getDeclaringClass()));
     }
 
     /**
@@ -58,7 +58,7 @@ public class GenericField {
      * @return The type of the field, possibly a resolved type variable
      */
     public Class<?> getType() {
-        return type;
+        return resolvableType.resolve(field.getType());
     }
 
     public String getName() {
@@ -71,19 +71,19 @@ public class GenericField {
         if (o == null || getClass() != o.getClass()) return false;
         GenericField that = (GenericField) o;
         return Objects.equals(field, that.field) &&
-                Objects.equals(type, that.type);
+                Objects.equals(resolvableType, that.resolvableType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(field, type);
+        return Objects.hash(field, resolvableType);
     }
 
     @Override
     public String toString() {
         return "GenericField{" +
                 "field=" + field +
-                ", type=" + type +
+                ", type=" + resolvableType +
                 '}';
     }
 }

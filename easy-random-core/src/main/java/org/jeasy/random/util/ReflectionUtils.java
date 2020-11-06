@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Locale.ENGLISH;
 import static java.util.stream.Collectors.toList;
@@ -104,7 +103,7 @@ public final class ReflectionUtils {
      */
     public static <T> List<GenericField> getDeclaredFields(T type) {
         return stream(type.getClass().getDeclaredFields())
-                .map(field -> new GenericField(field, field.getType()))
+                .map(GenericField::new)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -115,22 +114,12 @@ public final class ReflectionUtils {
      * @return list of inherited fields
      */
     public static List<GenericField> getInheritedFields(Class<?> type) {
+        Class<?> concreteType = type;
         List<GenericField> inheritedFields = new ArrayList<>();
         while (type.getSuperclass() != null) {
             Class<?> superclass = type.getSuperclass();
-            Type genericSuperclass = type.getGenericSuperclass();
-            Map<Type, Class<?>> typeVariables = new HashMap<>();
-            if (genericSuperclass instanceof ParameterizedType) {
-                Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
-                TypeVariable<? extends Class<?>>[] typeParameters = superclass.getTypeParameters();
-                for (int i = 0; i < actualTypeArguments.length; i++) {
-                    if (actualTypeArguments[i] instanceof Class) {
-                        typeVariables.put(typeParameters[i], (Class<?>) actualTypeArguments[i]);
-                    }
-                }
-            }
             inheritedFields.addAll(stream(superclass.getDeclaredFields())
-                    .map(field -> new GenericField(field, typeVariables.getOrDefault(field.getGenericType(), field.getType())))
+                    .map(field -> new GenericField(field, ResolvableType.forField(field, concreteType)))
                     .collect(Collectors.toList()));
             type = superclass;
         }

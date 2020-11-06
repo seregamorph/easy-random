@@ -66,19 +66,19 @@ class ReflectionUtilsTest {
     }
 
     @Test
-    void testGetInheritedFieldsTypeVariable() throws NoSuchFieldException {
+    void testGetInheritedFieldsTypeVariable() throws Exception {
         class Concrete extends GenericBaseClass<Boolean> {
             public Concrete(Boolean x) {
                 super(x);
             }
         }
         assertThat(ReflectionUtils.getInheritedFields(Concrete.class))
-                .containsExactlyInAnyOrder(new GenericField(GenericBaseClass.class.getDeclaredField("x"),
-                        Boolean.class));
+                .extracting(GenericField::getType)
+                .isEqualTo(Collections.singletonList(Boolean.class));
     }
 
     @Test
-    void testGetInheritedFieldsMissingTypeVariable() throws NoSuchFieldException {
+    void testGetInheritedFieldsMissingTypeVariable() throws Exception {
         @SuppressWarnings({"unchecked", "rawtypes"})
         class Concrete extends GenericBaseClass {
             public Concrete(Object x) {
@@ -86,12 +86,12 @@ class ReflectionUtilsTest {
             }
         }
         assertThat(ReflectionUtils.getInheritedFields(Concrete.class))
-                .containsExactlyInAnyOrder(new GenericField(GenericBaseClass.class.getDeclaredField("x"),
-                        Object.class));
+                .extracting(GenericField::getType)
+                .isEqualTo(Collections.singletonList(Object.class));
     }
 
     @Test
-    void testGetInheritedFieldsMultipleTypeVariables() throws NoSuchFieldException {
+    void testGetInheritedFieldsMultipleTypeVariables() throws Exception {
         class Concrete extends GenericBaseClass2<String, Integer> {
 
             public Concrete(String x, Integer y) {
@@ -99,8 +99,10 @@ class ReflectionUtilsTest {
             }
         }
         assertThat(ReflectionUtils.getInheritedFields(Concrete.class))
-                .containsExactlyInAnyOrder(new GenericField(GenericBaseClass2.class.getDeclaredField("x"), String.class),
-                        new GenericField(GenericBaseClass2.class.getDeclaredField("y"), Integer.class));
+                .extracting(GenericField::getType)
+                .isEqualTo(Arrays.asList(
+                        String.class, Integer.class
+                ));
     }
 
     @Test
