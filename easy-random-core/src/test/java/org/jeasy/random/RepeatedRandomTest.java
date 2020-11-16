@@ -67,19 +67,8 @@ public class RepeatedRandomTest {
         return easyRandom.nextObject(type);
     }
 
-    @EqualsAndHashCode
-    public static class PartialPayload {
-
-    }
-
-    @EqualsAndHashCode
-    public static class PartialResource extends PartialPayload {
-
-    }
-
     @Data
-    public static abstract class IdResource<K extends Serializable, T extends IdResource<K, ?>>
-            extends PartialResource {
+    public static abstract class IdResource<K extends Serializable, T extends IdResource<K, ?>> {
 
         private K id;
 
@@ -91,7 +80,7 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    public static class PlanActivityGroupResource extends PartialResource {
+    public static class PlanActivityGroupResource {
 
         private ProductivityActivityResource activity;
     }
