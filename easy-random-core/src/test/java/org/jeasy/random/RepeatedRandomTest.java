@@ -23,7 +23,7 @@ public class RepeatedRandomTest {
 
     @Test
     public void validateEqualsAndHashCodeSameRandomInstance() {
-        val clazz = PlanActivityGroupResource.class;
+        val clazz = ProductivityActivityResource.class;
 
         int failed = 0;
         for (int i = 0; i < 20; i++) try {
@@ -72,12 +72,6 @@ public class RepeatedRandomTest {
 
         private Long id;
 
-    }
-
-    @Data
-    public static class PlanActivityGroupResource {
-
-        private ProductivityActivityResource activity;
     }
 
     @Data
