@@ -94,18 +94,8 @@ public class RepeatedRandomTest {
         private long plannedTime;
     }
 
-//    public enum CategoryLevel {
-//        DEFAULT, MANAGER, USER, TEAM, ASSIGNMENT
-//    }
-//
-//    public enum CategoryRootType {
-//        PRODUCTIVE, COMMUNICATION, DISTRACTION, UNCATEGORIZED;
-//    }
-
     @Data
     public static class ProductivityActivityResource extends IdResource<Long, ProductivityActivityResource> {
-
-//        private CategoryLevel level;
 
         private String name;
 
@@ -125,17 +115,8 @@ public class RepeatedRandomTest {
 
         private String color;
 
-//        private UserResource owner;
-
-//        private CategoryRootType rootType;
-
         private ManagerResource manager;
     }
-
-//    public enum AvatarType {
-//        CANDIDATE,
-//        MANAGER
-//    }
 
     @Getter
     @Setter
@@ -143,8 +124,6 @@ public class RepeatedRandomTest {
     public static class ManagerResource extends AvatarResource<ManagerResource> {
 
         private CompanyResource company;
-
-//        private UserResource accountManager;
 
         private List<MarketplaceMemberResource> savedCandidates;
 
