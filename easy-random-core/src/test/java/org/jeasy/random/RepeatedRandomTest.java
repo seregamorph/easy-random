@@ -17,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.FieldNameConstants;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +27,8 @@ public class RepeatedRandomTest {
         val clazz = PlanActivityGroupResource.class;
 
         for (int i = 0; i < 100; i++) {
-            System.out.println(i);
-            val seed = ThreadLocalRandom.current().nextLong();
+            System.err.println(i);
+            val seed = new Random().nextLong();
 
             val instance1 = randomInstance(clazz, seed);
             // same seed - hence same object (mostly)
@@ -40,11 +39,11 @@ public class RepeatedRandomTest {
         }
     }
 
-    protected EasyRandomParameters prepareRandomParameters(/*@Nullable*/ Long seed) {
-        val random = seed == null ? new Random() : new Random(seed);
+    protected EasyRandomParameters prepareRandomParameters(long seed) {
+        val random = new Random(seed);
         return new EasyRandomParameters()
                 .objectPoolSize(2)
-                .seed(seed == null ? 0L : seed)
+                .seed(seed)
                 .overrideDefaultInitialization(true)
                 // Serializable mapping is for IdResource, should be handled via correct generic type randomization
                 // https://github.com/j-easy/easy-random/issues/440
@@ -55,17 +54,12 @@ public class RepeatedRandomTest {
                 .randomize(Double.class, () -> random.nextInt(1024) / 256.0d)
                 .randomize(BigDecimal.class, () -> new BigDecimal(random.nextInt(1024))
                         .divide(new BigDecimal(256), 4, RoundingMode.DOWN))
-                .randomize(Object.class, () -> random.nextInt(1024))
+                //.randomize(Object.class, () -> random.nextInt(1024))
                 .stringLengthRange(3, 5)
-                .collectionSizeRange(2, 3)
-                .excludeField(field -> {
-                    return field.getDeclaringClass() == PartialPayload.class
-                            && (field.getName().equals("payloadClass")
-                            || field.getName().equals("partialProperties"));
-                });
+                .collectionSizeRange(2, 3);
     }
 
-    private Object randomInstance(Class<?> type, /*@Nullable*/ Long seed) {
+    private Object randomInstance(Class<?> type, long seed) {
         val easyRandom = new EasyRandom(prepareRandomParameters(seed));
         return easyRandom.nextObject(type);
     }
@@ -94,7 +88,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class PlanActivityGroupResource extends PartialResource {
 
         private ProductivityActivityResource activity;
@@ -111,7 +104,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class ProductivityActivityResource extends IdResource<Long, ProductivityActivityResource> {
 
         private CategoryLevel level;
@@ -151,7 +143,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class ManagerResource extends AvatarResource<ManagerResource> {
 
         private CompanyResource company;
@@ -200,7 +191,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class WorkflowJiraManagerResource extends IdResource<Long, WorkflowJiraManagerResource> {
 
         private String username;
@@ -217,7 +207,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class TeamResource extends IdResource<Long, TeamResource> {
 
         private String name;
@@ -249,7 +238,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class WorkflowStateMappingResource extends PartialResource {
 
         private WorkflowStateResource workflowState;
@@ -260,7 +248,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class WorkflowStateResource extends IdResource<Long, WorkflowStateResource> {
 
         private String name;
@@ -269,7 +256,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class WorkflowJiraProjectResource extends IdResource<Long, WorkflowJiraProjectResource> {
 
         private Long jiraId;
@@ -284,7 +270,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class WorkflowJiraServerResource extends IdResource<Long, WorkflowJiraServerResource> {
 
         private String name;
@@ -309,7 +294,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class TeamCategoryResource extends IdResource<Long, TeamCategoryResource> {
 
         private String name;
@@ -318,7 +302,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class TeamTemplateResource extends IdResource<Long, TeamTemplateResource> {
 
         private String name;
@@ -332,7 +315,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class TeamTemplateSeatResource extends PartialResource {
 
         private JobResource job;
@@ -341,7 +323,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class TeamDemandResource extends IdResource<Long, TeamDemandResource> {
 
         private JobResource job;
@@ -356,7 +337,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class MetricSetupResource extends IdResource<Long, MetricSetupResource> {
 
         @EqualsAndHashCode.Exclude
@@ -407,7 +387,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class AgreementResource extends PartialResource {
 
         private String url;
@@ -419,7 +398,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class AvailableSlotResource extends IdResource<Long, AvailableSlotResource> {
 
         private Date startDateTime;
@@ -434,7 +412,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class JobResource extends IdResource<Long, JobResource> {
 
         private String title;
@@ -443,7 +420,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class RejectedMemberResource extends IdResource<Long, RejectedMemberResource> {
 
         private MarketplaceMemberResource marketplaceMember;
@@ -456,14 +432,12 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class MarketplaceMemberResource extends IdResource<Long, MarketplaceMemberResource> {
 
         private ApplicationResource application;
     }
 
     @Data
-    @FieldNameConstants
     public static class ApplicationResource extends IdResource<Long, ApplicationResource> {
 
         private CandidateResource candidate;
@@ -481,7 +455,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class CompanyResource extends IdResource<Long, CompanyResource> {
 
         private String name;
@@ -510,7 +483,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class LocationResource extends PartialResource {
 
         private static final int MAX_PHONE_LENGTH = 18;
@@ -543,7 +515,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class CountryResource extends IdResource<Long, CountryResource> {
 
         private String name;
@@ -559,7 +530,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class TimeZoneResource extends IdResource<Long, TimeZoneResource> {
 
         private String name;
@@ -575,7 +545,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static abstract class AvatarResource<P extends AvatarResource<P>> extends IdResource<Long, P> {
 
         public static final String FIELD_PRINTABLE_NAME = "printableName";
@@ -666,7 +635,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class UserSecurityResource extends PartialResource {
 
         public static final String FIELD_ACCOUNT_NON_EXPIRED = "accountNonExpired";
@@ -694,7 +662,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class UserAvatarResource extends IdResource<Long, UserAvatarResource> {
 
         private AvatarType type;
@@ -702,7 +669,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class ProductivityAliasResource extends IdResource<Long, ProductivityAliasResource> {
 
         private String name;
@@ -713,7 +679,6 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    @FieldNameConstants
     public static class ActivityProcessResource extends IdResource<Long, ActivityProcessResource> {
 
         private String name;
@@ -726,7 +691,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class AliasActivityResource extends IdResource<Long, AliasActivityResource> {
 
         @ToString.Exclude
@@ -743,7 +707,6 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    @FieldNameConstants
     public static class UserResource extends IdResource<Long, UserResource> {
 
         private String headline;
