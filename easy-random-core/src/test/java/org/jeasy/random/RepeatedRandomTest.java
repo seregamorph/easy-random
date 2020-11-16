@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -128,7 +127,7 @@ public class RepeatedRandomTest {
 
         private String color;
 
-        private UserResource owner;
+//        private UserResource owner;
 
         private CategoryRootType rootType;
 
@@ -147,7 +146,7 @@ public class RepeatedRandomTest {
 
         private CompanyResource company;
 
-        private UserResource accountManager;
+//        private UserResource accountManager;
 
         private List<MarketplaceMemberResource> savedCandidates;
 
@@ -564,66 +563,66 @@ public class RepeatedRandomTest {
 
         // Other details to be added in future tickets
 
-        private UserResource user = new UserResource();
+//        private UserResource user = new UserResource();
 
         private LocationResource location;
 
         //        @Proxy(AvatarResource.FIELD_USER)
-        public String getPrintableName() {
-            return user.getPrintableName();
-        }
+//        public String getPrintableName() {
+//            return user.getPrintableName();
+//        }
 
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public Long getUserId() {
-            return user.getId();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getFirstName() {
-            return user.getFirstName();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getLastName() {
-            return user.getLastName();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getEmail() {
-            return user.getEmail();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getPhotoUrl() {
-            return user.getPhotoUrl();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public List<AvatarType> getAvatarTypes() {
-            // Return a copy to avoid avatarTypes being mapped twice
-            return user.getAvatarTypes() == null ? new ArrayList<>() : new ArrayList<>(user.getAvatarTypes());
-        }
-
-        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_AVATARS})
-        public List<UserAvatarResource> getUserAvatars() {
-            // Return a copy to avoid userAvatars being mapped twice
-            return user.getUserAvatars() == null ? new ArrayList<>() : new ArrayList<>(user.getUserAvatars());
-        }
-
-        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_SECURITY})
-        public UserSecurityResource getUserSecurity() {
-            return user.getUserSecurity();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getHeadline() {
-            return user.getHeadline();
-        }
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-        public String getSummary() {
-            return user.getSummary();
-        }
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public Long getUserId() {
+//            return user.getId();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getFirstName() {
+//            return user.getFirstName();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getLastName() {
+//            return user.getLastName();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getEmail() {
+//            return user.getEmail();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getPhotoUrl() {
+//            return user.getPhotoUrl();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public List<AvatarType> getAvatarTypes() {
+//            // Return a copy to avoid avatarTypes being mapped twice
+//            return user.getAvatarTypes() == null ? new ArrayList<>() : new ArrayList<>(user.getAvatarTypes());
+//        }
+//
+//        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_AVATARS})
+//        public List<UserAvatarResource> getUserAvatars() {
+//            // Return a copy to avoid userAvatars being mapped twice
+//            return user.getUserAvatars() == null ? new ArrayList<>() : new ArrayList<>(user.getUserAvatars());
+//        }
+//
+//        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_SECURITY})
+//        public UserSecurityResource getUserSecurity() {
+//            return user.getUserSecurity();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getHeadline() {
+//            return user.getHeadline();
+//        }
+//
+//        //        @Proxy(AvatarResource.FIELD_USER)
+//        public String getSummary() {
+//            return user.getSummary();
+//        }
 
         public P setLocation(LocationResource location) {
             this.location = location;
@@ -706,34 +705,34 @@ public class RepeatedRandomTest {
         INCLUDE, EXCLUDE
     }
 
-    @Data
-    public static class UserResource extends IdResource<Long, UserResource> {
-
-        private String headline;
-
-        private String summary;
-
-        private String fullName;
-
-        private String printableName;
-
-        private String firstName;
-
-        private String lastName;
-
-        private String email;
-
-        private String photoUrl;
-
-        private List<AvatarType> avatarTypes;
-
-        private List<UserAvatarResource> userAvatars;
-
-        private UserSecurityResource userSecurity;
-
-        private boolean infoShared;
-
-        private LocationResource location;
-    }
+//    @Data
+//    public static class UserResource extends IdResource<Long, UserResource> {
+//
+//        private String headline;
+//
+//        private String summary;
+//
+//        private String fullName;
+//
+//        private String printableName;
+//
+//        private String firstName;
+//
+//        private String lastName;
+//
+//        private String email;
+//
+//        private String photoUrl;
+//
+//        private List<AvatarType> avatarTypes;
+//
+//        private List<UserAvatarResource> userAvatars;
+//
+//        private UserSecurityResource userSecurity;
+//
+//        private boolean infoShared;
+//
+//        private LocationResource location;
+//    }
 
 }
