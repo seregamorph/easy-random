@@ -366,15 +366,6 @@ public class RepeatedRandomTest {
     @Data
     public static class ApplicationResource extends IdResource<Long, ApplicationResource> {
 
-        private CandidateResource candidate;
-        private JobResource job;
-
-    }
-
-    @Data
-    public static class CandidateResource extends AvatarResource<CandidateResource> {
-
-        private String skypeId;
 
     }
 
@@ -383,61 +374,6 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class CompanyResource extends IdResource<Long, CompanyResource> {
 
-         }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class LocationResource extends PartialResource {
-
-        private CountryResource country;
-
-        private TimeZoneResource timeZone;
-
-        private String city;
-
-        private String state;
-
-        private String zip;
-
-        private String address;
-
-        private BigDecimal latitude;
-
-        private BigDecimal longitude;
-
-        private String phone;
-
-    }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class CountryResource extends IdResource<Long, CountryResource> {
-
-        private String name;
-
-        private String code;
-
-        private boolean allowed;
-
-        private List<TimeZoneResource> timezones;
-
-    }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class TimeZoneResource extends IdResource<Long, TimeZoneResource> {
-
-        private String name;
-
-        private Integer standardOffset;
-
-        private Integer offset;
-
-        private String hourlyOffset;
-
     }
 
     @Getter
@@ -445,39 +381,7 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static abstract class AvatarResource<P extends AvatarResource<P>> extends IdResource<Long, P> {
 
-
-        private LocationResource location;
-
     }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class UserSecurityResource extends PartialResource {
-
-        public static final String FIELD_ACCOUNT_NON_EXPIRED = "accountNonExpired";
-        public static final String FIELD_ACCOUNT_NON_LOCKED = "accountNonLocked";
-        public static final String FIELD_CREDENTIALS_NON_EXPIRED = "credentialsNonExpired";
-
-        private boolean linkedInLogin;
-        private boolean enabled;
-        private String securityQuestion;
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
