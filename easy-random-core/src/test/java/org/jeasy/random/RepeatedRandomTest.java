@@ -121,8 +121,6 @@ public class RepeatedRandomTest {
 
         private Set<ProductivityAliasResource> productivityApplications = new HashSet<>();
 
-        private List<AliasActivityResource> allAliases = new ArrayList<>();
-
         private long timeUsed;
 
         private String color;
@@ -489,8 +487,6 @@ public class RepeatedRandomTest {
         private static final String PHONE_LENGTH_EXCEED_ERROR_MESSAGE =
                 "Phone number must not be more than " + MAX_PHONE_LENGTH + " characters long.";
 
-        // Other details to be added in future tickets
-
         private CountryResource country;
 
         private TimeZoneResource timeZone;
@@ -546,88 +542,8 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static abstract class AvatarResource<P extends AvatarResource<P>> extends IdResource<Long, P> {
 
-        public static final String FIELD_PRINTABLE_NAME = "printableName";
-        public static final String FIELD_USER_ID = "userId";
-        public static final String FIELD_FIRST_NAME = "firstName";
-        public static final String FIELD_LAST_NAME = "lastName";
-        public static final String FIELD_EMAIL = "email";
-        public static final String FIELD_PHOTO_URL = "photoUrl";
-        public static final String FIELD_AVATAR_TYPES = "avatarTypes";
-        public static final String FIELD_USER_AVATARS = "userAvatars";
-        public static final String FIELD_USER_SECURITY = "userSecurity";
-        public static final String FIELD_HEADLINE = "headline";
-        public static final String FIELD_SUMMARY = "summary";
-
-        // The class being public allows java.lang.Class.getMethod to return a Method with generic information even when
-        // it's called from a different package. Useful in BaseResourceTest (located in a different package).
-
-        // Other details to be added in future tickets
-
-//        private UserResource user = new UserResource();
 
         private LocationResource location;
-
-        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getPrintableName() {
-//            return user.getPrintableName();
-//        }
-
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public Long getUserId() {
-//            return user.getId();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getFirstName() {
-//            return user.getFirstName();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getLastName() {
-//            return user.getLastName();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getEmail() {
-//            return user.getEmail();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getPhotoUrl() {
-//            return user.getPhotoUrl();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public List<AvatarType> getAvatarTypes() {
-//            // Return a copy to avoid avatarTypes being mapped twice
-//            return user.getAvatarTypes() == null ? new ArrayList<>() : new ArrayList<>(user.getAvatarTypes());
-//        }
-//
-//        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_AVATARS})
-//        public List<UserAvatarResource> getUserAvatars() {
-//            // Return a copy to avoid userAvatars being mapped twice
-//            return user.getUserAvatars() == null ? new ArrayList<>() : new ArrayList<>(user.getUserAvatars());
-//        }
-//
-//        //        @Proxy({AvatarResource.FIELD_USER, UserResource.FIELD_USER_SECURITY})
-//        public UserSecurityResource getUserSecurity() {
-//            return user.getUserSecurity();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getHeadline() {
-//            return user.getHeadline();
-//        }
-//
-//        //        @Proxy(AvatarResource.FIELD_USER)
-//        public String getSummary() {
-//            return user.getSummary();
-//        }
-
-        public P setLocation(LocationResource location) {
-            this.location = location;
-            return (P) this;
-        }
 
     }
 
@@ -644,19 +560,32 @@ public class RepeatedRandomTest {
         private boolean enabled;
         private String securityQuestion;
 
-        public boolean isAccountNonExpired() {
-            return true;
-        }
-
-        public boolean isAccountNonLocked() {
-            return true;
-        }
-
-        public boolean isCredentialsNonExpired() {
-            return true;
-        }
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Data
@@ -681,15 +610,5 @@ public class RepeatedRandomTest {
         private ProductivityAliasResource productivityAlias;
     }
 
-    @Data
-    public static class AliasActivityResource extends IdResource<Long, AliasActivityResource> {
-
-        @ToString.Exclude
-        @EqualsAndHashCode.Exclude
-        private ProductivityActivityResource activity;
-
-        private ProductivityAliasResource alias;
-
-    }
 
 }
