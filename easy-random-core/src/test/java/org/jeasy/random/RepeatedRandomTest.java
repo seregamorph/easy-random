@@ -2,19 +2,12 @@ package org.jeasy.random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -23,7 +16,7 @@ public class RepeatedRandomTest {
 
     @Test
     public void validateEqualsAndHashCodeSameRandomInstance() {
-        val clazz = ProductivityActivityResource.class;
+        val clazz = Parent.class;
 
         int failed = 0;
         for (int i = 0; i < 20; i++) try {
@@ -36,30 +29,19 @@ public class RepeatedRandomTest {
 
             assertEquals(instance1, instance2);
             //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
-        } catch (Throwable e) {
+        } catch (AssertionError e) {
             failed++;
         }
         System.out.println("failed=" + failed);
     }
 
     protected EasyRandomParameters prepareRandomParameters(long seed) {
-        val random = new Random(seed);
         return new EasyRandomParameters()
                 .objectPoolSize(2)
                 .seed(seed)
-                .overrideDefaultInitialization(true)
-                // Serializable mapping is for IdResource, should be handled via correct generic type randomization
-                // https://github.com/j-easy/easy-random/issues/440
-                // https://github.com/j-easy/easy-random/issues/441
-                .randomize(Serializable.class, () -> (long) random.nextInt(1024))
-                .randomize(Long.class, () -> (long) random.nextInt(1024))
-                .randomize(Integer.class, () -> random.nextInt(1024))
-                .randomize(Double.class, () -> random.nextInt(1024) / 256.0d)
-                .randomize(BigDecimal.class, () -> new BigDecimal(random.nextInt(1024))
-                        .divide(new BigDecimal(256), 4, RoundingMode.DOWN))
-                //.randomize(Object.class, () -> random.nextInt(1024))
-                .stringLengthRange(3, 5)
-                .collectionSizeRange(2, 3);
+                // .collectionSizeRange(2, 2) fails 30%
+                // fails 60%
+                .collectionSizeRange(3, 3);
     }
 
     private Object randomInstance(Class<?> type, long seed) {
@@ -69,31 +51,24 @@ public class RepeatedRandomTest {
 
     @Data
     public static abstract class IdResource {
-
         private Long id;
-
     }
 
     @Data
-    public static class ProductivityActivityResource extends IdResource {
-
-        private Set<ProductivityAliasResource> productivityApplications = new HashSet<>();
+    public static class Parent extends IdResource {
+        private Set<Mid> mid;
     }
 
     @Data
-    public static class ProductivityAliasResource extends IdResource {
-
-        private Set<ActivityProcessResource> processes = new HashSet<>();
+    public static class Mid extends IdResource {
+        private Set<Child> children;
     }
 
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class ActivityProcessResource extends IdResource {
-
+    @Data
+    public static class Child extends IdResource {
         @ToString.Exclude
         @EqualsAndHashCode.Exclude
-        private ProductivityAliasResource productivityAlias;
+        private Mid mid;
     }
 
 
