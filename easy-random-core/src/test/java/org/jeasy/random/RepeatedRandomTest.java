@@ -145,23 +145,6 @@ public class RepeatedRandomTest {
 
         private List<WorkflowJiraManagerResource> workflowJiraManagers;
 
-//        private AvatarType type;
-
-        public boolean isPersonal() {
-            return false;
-        }
-
-        public boolean isManager() {
-            return true;
-        }
-
-        public boolean isCompanyAdmin() {
-            return false;
-        }
-
-        public boolean isCandidate() {
-            return false;
-        }
     }
 
     @Getter
@@ -169,15 +152,6 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class WorkflowJiraManagerResource extends IdResource<Long, WorkflowJiraManagerResource> {
 
-        private String username;
-
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
-        private ManagerResource manager;
-
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
-        private TeamResource team;
     }
 
     @Getter
@@ -185,30 +159,6 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class TeamResource extends IdResource<Long, TeamResource> {
 
-        private String name;
-        private CompanyResource company;
-        private ManagerResource teamOwner;
-        private List<ManagerResource> watchers;
-        private Date createdOn;
-        private Date updatedOn;
-        private Long dfcTeamId;
-        private List<AgreementResource> agreements;
-        private List<MetricSetupResource> metricsSetups;
-        private List<ManagerResource> reportingManagers;
-        private List<TeamDemandResource> demands;
-        private TeamTemplateResource teamTemplate;
-        private TeamCategoryResource teamCategory;
-        private MarketplaceMemberStatus marketplaceStatus;
-        private TeamManagerChangeType teamManagerChangeType;
-        private BigDecimal weeklyCost;
-        private WorkflowJiraProjectResource workflowJiraProject;
-        private List<WorkflowStateMappingResource> workflowStateMapping;
-        private boolean deleted;
-        private CommunicationStatus communicationStatus;
-    }
-
-    public enum CommunicationStatus {
-        ON, OFF, NOT_SET;
     }
 
     @Getter
@@ -433,38 +383,12 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class CompanyResource extends IdResource<Long, CompanyResource> {
 
-        private String name;
-
-        private String website;
-
-        private LocationResource location;
-
-        private Long dfcCompanyId;
-
-        private boolean internal;
-
-        private float xoPercentage;
-
-        private Date createdOn;
-
-        private Date updatedOn;
-
-        private float currentBalance;
-
-        private String bdcCustomerId;
-
-        private CommunicationStatus communicationStatus;
-    }
+         }
 
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
     public static class LocationResource extends PartialResource {
-
-        private static final int MAX_PHONE_LENGTH = 18;
-
-        private static final String PHONE_LENGTH_EXCEED_ERROR_MESSAGE =
-                "Phone number must not be more than " + MAX_PHONE_LENGTH + " characters long.";
 
         private CountryResource country;
 
