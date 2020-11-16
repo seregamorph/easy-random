@@ -30,22 +30,19 @@ public class RepeatedRandomTest {
             assertEquals(instance1, instance2);
             //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
         } catch (AssertionError e) {
+            e.printStackTrace();
             failed++;
         }
         System.out.println("failed=" + failed);
     }
 
-    protected EasyRandomParameters prepareRandomParameters(long seed) {
-        return new EasyRandomParameters()
+    private Object randomInstance(Class<?> type, long seed) {
+        val easyRandom = new EasyRandom(new EasyRandomParameters()
                 .objectPoolSize(2)
                 .seed(seed)
                 // .collectionSizeRange(2, 2) fails 30%
                 // fails 60%
-                .collectionSizeRange(3, 3);
-    }
-
-    private Object randomInstance(Class<?> type, long seed) {
-        val easyRandom = new EasyRandom(prepareRandomParameters(seed));
+                .collectionSizeRange(3, 3));
         return easyRandom.nextObject(type);
     }
 
