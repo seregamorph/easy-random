@@ -26,7 +26,6 @@ public class RepeatedRandomTest {
             val instance2 = randomInstance(clazz, seed);
             try {
                 assertEquals(instance1, instance2);
-                //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
             } catch (AssertionError e) {
                 //e.printStackTrace();
                 failed++;
@@ -35,7 +34,7 @@ public class RepeatedRandomTest {
         System.out.println("failed=" + failed);
     }
 
-    private Object randomInstance(Class<?> type, long seed) {
+    private static Object randomInstance(Class<?> type, long seed) {
         val easyRandom = new EasyRandom(new EasyRandomParameters()
                 .objectPoolSize(2)
                 .seed(seed)
