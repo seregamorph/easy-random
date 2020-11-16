@@ -68,15 +68,10 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    public static abstract class IdResource<K extends Serializable, T extends IdResource<K, ?>> {
+    public static abstract class IdResource {
 
-        private K id;
+        private Long id;
 
-        @SuppressWarnings("unchecked")
-        public T setId(K id) {
-            this.id = id;
-            return (T) this;
-        }
     }
 
     @Data
@@ -86,13 +81,13 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    public static class ProductivityActivityResource extends IdResource<Long, ProductivityActivityResource> {
+    public static class ProductivityActivityResource extends IdResource {
 
         private Set<ProductivityAliasResource> productivityApplications = new HashSet<>();
     }
 
     @Data
-    public static class ProductivityAliasResource extends IdResource<Long, ProductivityAliasResource> {
+    public static class ProductivityAliasResource extends IdResource {
 
         private Set<ActivityProcessResource> processes = new HashSet<>();
     }
@@ -100,7 +95,7 @@ public class RepeatedRandomTest {
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
-    public static class ActivityProcessResource extends IdResource<Long, ActivityProcessResource> {
+    public static class ActivityProcessResource extends IdResource {
 
         @ToString.Exclude
         @EqualsAndHashCode.Exclude
