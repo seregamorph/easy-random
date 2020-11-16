@@ -52,7 +52,7 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    public static class Parent extends IdResource {
+    public static class Parent {
         private Set<Mid> mid;
     }
 
