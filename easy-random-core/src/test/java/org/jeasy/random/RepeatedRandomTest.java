@@ -2,8 +2,7 @@ package org.jeasy.random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import lombok.Data;
@@ -19,19 +18,19 @@ public class RepeatedRandomTest {
         val clazz = Parent.class;
 
         int failed = 0;
-        for (int i = 0; i < 20; i++) try {
-            //System.err.println(i);
+        for (int i = 0; i < 20; i++) {
             val seed = new Random().nextLong();
 
             val instance1 = randomInstance(clazz, seed);
             // same seed - hence same object (mostly)
             val instance2 = randomInstance(clazz, seed);
-
-            assertEquals(instance1, instance2);
-            //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
-        } catch (AssertionError e) {
-            //e.printStackTrace();
-            failed++;
+            try {
+                assertEquals(instance1, instance2);
+                //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
+            } catch (AssertionError e) {
+                //e.printStackTrace();
+                failed++;
+            }
         }
         System.out.println("failed=" + failed);
     }
@@ -53,7 +52,7 @@ public class RepeatedRandomTest {
 
     @Data
     public static class Parent {
-        private Set<Mid> mid;
+        private List<Mid> mid;
     }
 
     @Data
