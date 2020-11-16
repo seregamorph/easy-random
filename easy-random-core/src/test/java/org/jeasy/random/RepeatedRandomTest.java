@@ -30,7 +30,7 @@ public class RepeatedRandomTest {
             assertEquals(instance1, instance2);
             //collector.checkThat("hashCode() should be the same", instance1.hashCode(), equalTo(instance2.hashCode()));
         } catch (AssertionError e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             failed++;
         }
         System.out.println("failed=" + failed);
@@ -57,7 +57,7 @@ public class RepeatedRandomTest {
     }
 
     @Data
-    public static class Mid extends IdResource {
+    public static class Mid {
         private Set<Child> children;
     }
 
