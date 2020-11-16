@@ -90,8 +90,6 @@ public class RepeatedRandomTest {
     public static class PlanActivityGroupResource extends PartialResource {
 
         private ProductivityActivityResource activity;
-
-        private long plannedTime;
     }
 
     @Data
@@ -106,7 +104,6 @@ public class RepeatedRandomTest {
         private ProductivityActivityResource originalActivity;
 
         private Set<ProductivityAliasResource> productivityApplications = new HashSet<>();
-
     }
 
     @Data
@@ -119,10 +116,6 @@ public class RepeatedRandomTest {
     @Setter
     @EqualsAndHashCode(callSuper = true)
     public static class ActivityProcessResource extends IdResource<Long, ActivityProcessResource> {
-
-        private String name;
-
-        private String process;
 
         @ToString.Exclude
         @EqualsAndHashCode.Exclude
