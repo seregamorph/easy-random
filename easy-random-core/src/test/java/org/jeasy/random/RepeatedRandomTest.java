@@ -97,13 +97,9 @@ public class RepeatedRandomTest {
     @Data
     public static class ProductivityActivityResource extends IdResource<Long, ProductivityActivityResource> {
 
-        private String name;
-
         @EqualsAndHashCode.Exclude
         @ToString.Exclude
         private ProductivityActivityResource parentActivity;
-
-        private Long linkedEntityId;
 
         @EqualsAndHashCode.Exclude
         @ToString.Exclude
@@ -111,31 +107,10 @@ public class RepeatedRandomTest {
 
         private Set<ProductivityAliasResource> productivityApplications = new HashSet<>();
 
-        private long timeUsed;
-
-        private String color;
-
-        private ManagerResource manager;
-    }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class ManagerResource extends AvatarResource<ManagerResource> {
-
-    }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static abstract class AvatarResource<P extends AvatarResource<P>> extends IdResource<Long, P> {
-
     }
 
     @Data
     public static class ProductivityAliasResource extends IdResource<Long, ProductivityAliasResource> {
-
-        private String name;
 
         private Set<ActivityProcessResource> processes = new HashSet<>();
     }
