@@ -205,17 +205,6 @@ public class RepeatedRandomTest {
         private String rawPassword;
     }
 
-    public enum TeamManagerChangeType {
-        ALL,
-        DISABLE_FOR_DIRECT_MANAGERS,
-        DISABLE_FOR_ALL_MANAGERS,
-    }
-
-    public enum MarketplaceMemberStatus {
-        AVAILABLE,
-        ASSIGNED,
-        INACTIVE
-    }
 
     @Getter
     @Setter
@@ -283,7 +272,6 @@ public class RepeatedRandomTest {
         private BigDecimal metricTarget;
         private String worksheetName;
         private MetricType type;
-        private MetricComputation metricComputation;
         private String customFieldId;
         private boolean currentTeamMetric;
         private int errorCount;
@@ -305,34 +293,10 @@ public class RepeatedRandomTest {
         DESK
     }
 
-    public enum MetricComputation {
-        CUSTOM_FIELD_SUM,
-        ISSUE_COUNT
-    }
-
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class AgreementResource extends PartialResource {
-
-        private String url;
-        private String fileName;
-        private Date createdOn;
-        private Date updatedOn;
-    }
-
     @Getter
     @Setter
     @EqualsAndHashCode(callSuper = true)
     public static class AvailableSlotResource extends IdResource<Long, AvailableSlotResource> {
-
-        private Date startDateTime;
-
-        private Date endDateTime;
-
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
-        private ManagerResource manager;
     }
 
     @Getter
@@ -340,7 +304,6 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class JobResource extends IdResource<Long, JobResource> {
 
-        private String title;
     }
 
     @Getter
@@ -348,19 +311,11 @@ public class RepeatedRandomTest {
     @EqualsAndHashCode(callSuper = true)
     public static class RejectedMemberResource extends IdResource<Long, RejectedMemberResource> {
 
-        private MarketplaceMemberResource marketplaceMember;
-
-        @EqualsAndHashCode.Exclude
-        @ToString.Exclude
-        private ManagerResource manager;
-
-        private Date rejectedOn;
     }
 
     @Data
     public static class MarketplaceMemberResource extends IdResource<Long, MarketplaceMemberResource> {
 
-        private ApplicationResource application;
     }
 
     @Data
