@@ -94,18 +94,18 @@ public class RepeatedRandomTest {
         private long plannedTime;
     }
 
-    public enum CategoryLevel {
-        DEFAULT, MANAGER, USER, TEAM, ASSIGNMENT
-    }
-
-    public enum CategoryRootType {
-        PRODUCTIVE, COMMUNICATION, DISTRACTION, UNCATEGORIZED;
-    }
+//    public enum CategoryLevel {
+//        DEFAULT, MANAGER, USER, TEAM, ASSIGNMENT
+//    }
+//
+//    public enum CategoryRootType {
+//        PRODUCTIVE, COMMUNICATION, DISTRACTION, UNCATEGORIZED;
+//    }
 
     @Data
     public static class ProductivityActivityResource extends IdResource<Long, ProductivityActivityResource> {
 
-        private CategoryLevel level;
+//        private CategoryLevel level;
 
         private String name;
 
@@ -129,15 +129,15 @@ public class RepeatedRandomTest {
 
 //        private UserResource owner;
 
-        private CategoryRootType rootType;
+//        private CategoryRootType rootType;
 
         private ManagerResource manager;
     }
 
-    public enum AvatarType {
-        CANDIDATE,
-        MANAGER
-    }
+//    public enum AvatarType {
+//        CANDIDATE,
+//        MANAGER
+//    }
 
     @Getter
     @Setter
@@ -168,7 +168,7 @@ public class RepeatedRandomTest {
 
         private List<WorkflowJiraManagerResource> workflowJiraManagers;
 
-        private AvatarType type;
+//        private AvatarType type;
 
         public boolean isPersonal() {
             return false;
@@ -658,14 +658,6 @@ public class RepeatedRandomTest {
 
     }
 
-    @Getter
-    @Setter
-    @EqualsAndHashCode(callSuper = true)
-    public static class UserAvatarResource extends IdResource<Long, UserAvatarResource> {
-
-        private AvatarType type;
-
-    }
 
     @Data
     public static class ProductivityAliasResource extends IdResource<Long, ProductivityAliasResource> {
@@ -698,41 +690,6 @@ public class RepeatedRandomTest {
 
         private ProductivityAliasResource alias;
 
-        private CategorizationType type = CategorizationType.INCLUDE;
     }
-
-    public enum CategorizationType {
-        INCLUDE, EXCLUDE
-    }
-
-//    @Data
-//    public static class UserResource extends IdResource<Long, UserResource> {
-//
-//        private String headline;
-//
-//        private String summary;
-//
-//        private String fullName;
-//
-//        private String printableName;
-//
-//        private String firstName;
-//
-//        private String lastName;
-//
-//        private String email;
-//
-//        private String photoUrl;
-//
-//        private List<AvatarType> avatarTypes;
-//
-//        private List<UserAvatarResource> userAvatars;
-//
-//        private UserSecurityResource userSecurity;
-//
-//        private boolean infoShared;
-//
-//        private LocationResource location;
-//    }
 
 }
