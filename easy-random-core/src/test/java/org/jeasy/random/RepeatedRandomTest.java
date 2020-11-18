@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.val;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class RepeatedRandomTest {
@@ -17,8 +18,9 @@ public class RepeatedRandomTest {
     public void validateEqualsAndHashCodeSameRandomInstance() {
         val clazz = Parent.class;
 
+        int total = 50;
         int failed = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < total; i++) {
             val seed = new Random().nextLong();
 
             val instance1 = randomInstance(clazz, seed);
@@ -32,6 +34,10 @@ public class RepeatedRandomTest {
             }
         }
         System.out.println("failed=" + failed);
+        // flaky failure
+        Assertions.assertThat(failed)
+                .isGreaterThan(0)
+                .isLessThan(total);
     }
 
     private static Object randomInstance(Class<?> type, long seed) {
